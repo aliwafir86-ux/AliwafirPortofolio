@@ -86,18 +86,41 @@
             opacity: 0; transform: translateY(20px); transition: all 0.3s ease;
         }
         #toast.show { opacity: 1; transform: translateY(0); }
+
+        /* Style Preloader */
+        #preloader {
+            position: fixed; inset: 0; z-index: 100;
+            background: #e2e8f0;
+            display: flex; flex-direction: column; items-center; justify-content: center;
+            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+        }
+        body.dark-mode #preloader {
+            background: #090d16;
+        }
+        #preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
     </style>
 </head>
 <body class="h-screen w-screen overflow-hidden flex flex-col md:flex-row relative select-none">
     
+    <!-- MINIMALIST PRELOADER -->
+    <div id="preloader">
+        <div class="text-center">
+            <p class="text-[11px] md:text-xs font-light tracking-[0.25em] mb-3 text-gray-500 uppercase">MUHAMMAD ALI WAFIR © 2026</p>
+            <p id="loader-counter" class="text-3xl md:text-4xl font-light tracking-tighter">0%</p>
+        </div>
+    </div>
+
     <div id="custom-cursor"></div>
     <div id="toast" class="fixed bottom-24 md:bottom-6 right-6 z-50 bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-[10px] font-medium shadow-lg">Copied to clipboard!</div>
     <div class="bg-noise"></div>
 
-    <!-- FRAME TIPIS ESTETIK (Diubah inset-nya agar tidak menabrak teks) -->
+    <!-- FRAME TIPIS ESTETIK -->
     <div class="fixed top-2 bottom-2 left-2 right-2 md:top-3 md:bottom-3 md:left-3 md:right-3 border border-black/15 dark:border-white/15 pointer-events-none z-[60] transition-colors duration-300"></div>
 
-    <!-- Sisi Kiri: Teks Vertikal Bar (Diperlebar dan diberi padding agar tidak tertabrak garis frame) -->
+    <!-- Sisi Kiri: Teks Vertikal Bar -->
     <div class="hidden md:flex w-[4.5rem] pl-3 h-full border-r border-gray-400/50 flex-col justify-end items-center pb-10 text-[10px] font-medium tracking-widest z-10 transition-colors">
         <div class="vertical-text flex gap-5">
             <span id="mode-light" onclick="setMode('light')" class="hover:opacity-50 transition-opacity">■ LIGHT</span>
@@ -116,7 +139,6 @@
                 </span>
             </div>
 
-            <!-- Diubah ukurannya dan ketebalannya jadi pas (font-light), ditambah <br> agar seperti di gambar -->
             <h1 class="text-3xl md:text-[2.25rem] leading-tight font-light mb-3 tracking-tight">Muhammad Ali <br> Wafir</h1>
             <p class="text-[11px] font-medium text-gray-700 mb-6 md:mb-16 transition-colors">Sociology Graduate & Project Manager</p>
 
@@ -139,7 +161,6 @@
     <div class="w-full md:w-2/3 flex-1 h-full relative p-8 md:p-12 z-10 overflow-hidden">
         
         <div id="home" class="content-section active relative">
-            <!-- Metrics Font Dikecilkan -->
             <div class="flex md:absolute top-0 md:top-2 left-0 md:left-4 gap-6 md:gap-8 text-[11px] font-medium border-l border-black dark:border-white pl-4 mb-6 md:mb-0">
                 <div>
                     <p class="text-base md:text-lg font-light">1,000+</p>
@@ -155,7 +176,6 @@
                 </div>
             </div>
 
-            <!-- Paragraf Dikecilkan, Posisi digeser sedikit agar aman dari frame -->
             <div class="md:absolute bottom-6 right-6 lg:right-12 text-left md:text-right max-w-sm text-[11px] font-normal leading-relaxed">
                 <p>Based in Bandung, Jawa Barat.</p><br>
                 <p>I am a Sociology of Development graduate from UIN Sunan Gunung Djati Bandung.</p><br>
@@ -303,6 +323,25 @@
     </div>
 
     <script>
+        /* Skrip Preloader Counter */
+        window.addEventListener('load', () => {
+            let progress = 0;
+            const counter = document.getElementById('loader-counter');
+            const preloader = document.getElementById('preloader');
+            
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 20) + 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        preloader.classList.add('fade-out');
+                    }, 200);
+                }
+                counter.innerText = progress + '%';
+            }, 60);
+        });
+
         function updateClock() {
             const now = new Date();
             const options = { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
