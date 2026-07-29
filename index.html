@@ -5,9 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muhammad Ali Wafir - Portfolio</title>
     
+    <!-- SEO & Open Graph Tambahan -->
+    <meta name="description" content="Portfolio of Muhammad Ali Wafir, a Sociology Graduate, Project Manager & Creative Developer.">
+    <meta name="keywords" content="Portfolio, Muhammad Ali Wafir, Project Manager, Social Worker, Developer, Bandung">
+    <meta name="author" content="Muhammad Ali Wafir">
+    
     <meta property="og:title" content="Muhammad Ali Wafir - Portfolio">
     <meta property="og:description" content="Sociology Graduate, Project Manager & Creative Developer based in Bandung.">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="URL_GAMBAR"> 
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Muhammad Ali Wafir - Portfolio">
+    <meta name="twitter:description" content="Sociology Graduate, Project Manager & Creative Developer based in Bandung.">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>■</text></svg>">
 
@@ -57,10 +68,37 @@
         body.dark-mode .border-gray-400 { border-color: #334155; }
         body.dark-mode .border-black { border-color: #f8fafc; }
         body.dark-mode .modal-box {
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.95);
             border-color: #64748b;
             color: #f8fafc;
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+        }
+
+        /* Menyembunyikan blok statistik di Home tanpa mengubah HTML aslinya */
+        #home > div:first-child { display: none !important; }
+
+        /* Tema Teal & Gold */
+        body.teal-mode {
+            background: linear-gradient(-45deg, #042f2e, #134e4a, #0f766e, #115e59);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fef08a; 
+        }
+        body.teal-mode .text-gray-700, 
+        body.teal-mode .text-gray-600 { color: #fde047; }
+        body.teal-mode .text-gray-500 { color: #facc15; }
+        body.teal-mode .text-black { color: #ffffff; }
+        body.teal-mode .border-gray-400 { border-color: #fef08a; }
+        body.teal-mode .border-black { border-color: #fef08a; }
+        body.teal-mode .modal-box {
+            background: rgba(4, 47, 46, 0.95);
+            border-color: #fef08a;
+            color: #fef08a;
+            backdrop-filter: blur(16px);
+        }
+        body.teal-mode #custom-cursor {
+            background-color: #fef08a;
+            box-shadow: 0 0 12px rgba(254, 240, 138, 0.8);
         }
 
         #custom-cursor {
@@ -79,6 +117,7 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
         body.dark-mode .bg-noise { opacity: 0.18; }
+        body.teal-mode .bg-noise { opacity: 0.20; }
 
         .vertical-text { writing-mode: vertical-rl; transform: rotate(180deg); }
         
@@ -104,6 +143,7 @@
             transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
         }
         body.dark-mode #preloader { background: #090d16; }
+        body.teal-mode #preloader { background: #042f2e; }
         #preloader.fade-out { opacity: 0; visibility: hidden; }
 
         @keyframes marquee {
@@ -146,9 +186,12 @@
         <div>
             <div class="flex items-center justify-between gap-2 text-[10px] font-medium text-gray-500 mb-4">
                 <span id="wib-clock"><i class="fa-regular fa-clock"></i> --:--:-- WIB</span>
-                <span class="inline-flex items-center gap-1.5 text-green-600 dark:text-green-400">
-                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> <span data-i18n="avail">AVAILABLE</span>
-                </span>
+                <div class="flex items-center gap-2">
+                    <button onclick="openCommandPalette(); playClickSound();" class="border border-black/30 dark:border-white/30 px-1.5 py-0.5 rounded text-[9px] hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">⌘K</button>
+                    <span class="inline-flex items-center gap-1.5 text-green-600 dark:text-green-400">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> <span data-i18n="avail">AVAILABLE</span>
+                    </span>
+                </div>
             </div>
 
             <!-- Mobile Mode & Lang Switcher -->
@@ -158,7 +201,8 @@
                     <span id="mobile-mode-light" onclick="setMode('light'); playClickSound();" class="hover:opacity-50 transition-opacity cursor-pointer">■ LIGHT</span>
                     <span id="mobile-mode-dark" onclick="setMode('dark'); playClickSound();" class="hover:opacity-50 transition-opacity text-gray-500 cursor-pointer">□ DARK</span>
                 </div>
-                <div class="flex gap-3">
+                <div class="flex gap-3 items-center">
+                    <button onclick="openCommandPalette(); playClickSound();" class="border border-black/30 dark:border-white/30 px-1.5 py-0.5 rounded text-[9px]">⌘K</button>
                     <span id="mobile-mode-mono" onclick="toggleMono(); playClickSound();" class="hover:opacity-50 transition-opacity cursor-pointer">■ MONO</span>
                     <span onclick="toggleLanguage(); playClickSound();" class="text-sky-600 dark:text-sky-400 cursor-pointer font-bold">🌐 <span id="lang-label-m">ID</span></span>
                 </div>
@@ -177,8 +221,9 @@
             </nav>
         </div>
         
-        <div class="hidden md:block text-[10px] font-medium text-gray-500 transition-colors">
+        <div class="hidden md:flex justify-between items-center text-[10px] font-medium text-gray-500 transition-colors">
             <p>© Ali Wafir 2026</p>
+            <button onclick="openModal('resumeModal'); playClickSound();" class="hover:underline text-sky-600 dark:text-sky-400" data-i18n="viewCvBtn">VIEW CV ↗</button>
         </div>
     </div>
 
@@ -345,6 +390,28 @@
         <button onclick="showSection('faq', this); playClickSound();" data-target="faq" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-circle-question text-sm mb-0.5"></i><span data-i18n="navFaq">FAQ</span></button>
     </div>
 
+    <!-- COMMAND PALETTE MODAL (NEW UPGRADE) -->
+    <div id="command-palette" class="fixed inset-0 z-[80] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="modal-box bg-white border border-black max-w-md w-full p-4 relative shadow-2xl rounded-lg">
+            <div class="flex items-center border-b border-black/20 dark:border-white/20 pb-3 mb-3">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 mr-2"></i>
+                <input id="cmd-input" type="text" placeholder="Type a command or search..." class="w-full bg-transparent border-none focus:outline-none text-xs font-mono" oninput="filterCommands(this.value)">
+                <button onclick="closeCommandPalette()" class="text-[10px] text-gray-400 hover:text-black dark:hover:text-white">ESC</button>
+            </div>
+            <div id="cmd-list" class="flex flex-col gap-1 max-h-60 overflow-y-auto text-xs font-mono">
+                <div onclick="execCmd('home')" class="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded cursor-pointer flex justify-between items-center"><span>🏠 Go to Home</span><span class="text-[9px] text-gray-400">H</span></div>
+                <div onclick="execCmd('projects')" class="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded cursor-pointer flex justify-between items-center"><span>📂 Go to Projects</span><span class="text-[9px] text-gray-400">P</span></div>
+                <div onclick="execCmd('notes')" class="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded cursor-pointer flex justify-between items-center"><span>📝 Go to Notes</span><span class="text-[9px] text-gray-400">N</span></div>
+                <div onclick="execCmd('info')" class="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded cursor-pointer flex justify-between items-center"><span>👤 Go to Info</span><span class="text-[9px] text-gray-400">I</span></div>
+                <div onclick="execCmd('contact')" class="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded cursor-pointer flex justify-between items-center"><span>✉️ Go to Contact</span><span class="text-[9px] text-gray-400">C</span></div>
+                <div onclick="execCmd('faq')" class="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded cursor-pointer flex justify-between items-center"><span>❓ Go to FAQ</span><span class="text-[9px] text-gray-400">F</span></div>
+                <div onclick="execCmd('theme')" class="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded cursor-pointer flex justify-between items-center"><span>🌓 Toggle Dark / Light Theme</span><span class="text-[9px] text-gray-400">T</span></div>
+                <div onclick="execCmd('lang')" class="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded cursor-pointer flex justify-between items-center"><span>🌐 Switch Language (ID/EN)</span><span class="text-[9px] text-gray-400">L</span></div>
+                <div onclick="execCmd('resume')" class="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded cursor-pointer flex justify-between items-center"><span>📄 View Professional CV</span><span class="text-[9px] text-gray-400">CV</span></div>
+            </div>
+        </div>
+    </div>
+
     <!-- SEMUA POPUP / MODAL -->
     <div id="master-modal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-6 transition-opacity duration-300">
         <div class="modal-box bg-white border border-black max-w-lg w-full p-6 md:p-8 relative shadow-2xl transition-all scale-95 opacity-0 animate-[slideUpFade_0.3s_ease_forwards]">
@@ -357,6 +424,32 @@
                 <p id="modal-desc" class="text-[11px] md:text-xs font-normal leading-relaxed mb-4 md:mb-6">Desc</p>
                 <div id="modal-tags" class="flex flex-wrap gap-2 text-[10px] font-medium mb-6"></div>
                 <a id="modal-link" href="#" target="_blank" onclick="playClickSound()" class="inline-block border border-black dark:border-white px-4 py-2 text-[10px] font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all" data-i18n="visitBtn">VISIT PROJECT ↗</a>
+            </div>
+
+            <!-- Isi Modal Resume / CV (NEW UPGRADE) -->
+            <div id="modal-content-resume" class="hidden">
+                <h3 class="text-xl md:text-2xl font-light mb-1">Muhammad Ali Wafir</h3>
+                <p class="text-[11px] font-medium text-gray-500 mb-4">Professional Resume Summary • 2026</p>
+                <div class="text-[11px] space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                    <div>
+                        <p class="font-bold border-b border-black/20 dark:border-white/20 pb-1 mb-1">EDUCATION</p>
+                        <p>• S1 Sosiologi Pembangunan, UIN Sunan Gunung Djati Bandung (2019–2024)</p>
+                        <p>• SMA Islam Darul Ulum (2014–2017)</p>
+                    </div>
+                    <div>
+                        <p class="font-bold border-b border-black/20 dark:border-white/20 pb-1 mb-1">EXPERIENCE & ROLES</p>
+                        <p>• Project Manager - Social Programs & Distribution (2025–2026)</p>
+                        <p>• Founder & Web Branding - Ice KulCool (Entrepreneurship)</p>
+                        <p>• Social Worker & Educator - Yayasan RKPD (2019–2024)</p>
+                    </div>
+                    <div>
+                        <p class="font-bold border-b border-black/20 dark:border-white/20 pb-1 mb-1">CORE SKILLS</p>
+                        <p>Project Management, Social Research, Digital Administration, AI Productivity Tools, Graphic Design & Copywriting.</p>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <button onclick="copyText('aliwafir86@gmail.com'); playClickSound();" class="w-full border border-black dark:border-white py-2.5 text-xs font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all text-center">COPY EMAIL CONTACT ↗</button>
+                </div>
             </div>
 
             <!-- Isi Modal WhatsApp -->
@@ -382,6 +475,27 @@
     </div>
 
     <script>
+        // INIT Pengecekan Local Storage
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) setMode(savedTheme);
+            
+            const savedLang = localStorage.getItem('lang');
+            if (savedLang && savedLang !== currentLang) {
+                currentLang = savedLang === 'id' ? 'en' : 'id'; 
+                toggleLanguage();
+            }
+
+            const savedMono = localStorage.getItem('mono');
+            if (savedMono === 'false') toggleMono(); 
+
+            // Inject Teal Mode ke Command Palette secara dinamis tanpa merubah struktur HTML asli
+            const cmdList = document.getElementById('cmd-list');
+            if(cmdList) {
+                cmdList.insertAdjacentHTML('beforeend', '<div onclick="execCmd(\'teal\')" class="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded cursor-pointer flex justify-between items-center"><span>✨ Toggle Teal Mode</span><span class="text-[9px] text-gray-400">TL</span></div>');
+            }
+        });
+
         let soundEnabled = true;
         function toggleSound() {
             soundEnabled = !soundEnabled;
@@ -412,7 +526,32 @@
             let progress = 0; const counter = document.getElementById('loader-counter'); const preloader = document.getElementById('preloader');
             const interval = setInterval(() => {
                 progress += Math.floor(Math.random() * 20) + 10;
-                if (progress >= 100) { progress = 100; clearInterval(interval); setTimeout(() => { preloader.classList.add('fade-out'); }, 200); }
+                if (progress >= 100) { 
+                    progress = 100; 
+                    clearInterval(interval); 
+                    setTimeout(() => { 
+                        preloader.classList.add('fade-out'); 
+                        
+                        // Efek Typewriter Otomatis
+                        setTimeout(() => {
+                            const roleText = document.querySelector('[data-i18n="role"]');
+                            if(roleText) {
+                                const text = roleText.innerText;
+                                roleText.innerText = '';
+                                let i = 0;
+                                const typeWriter = setInterval(() => {
+                                    if (i < text.length) {
+                                        roleText.innerHTML += text.charAt(i);
+                                        i++;
+                                    } else {
+                                        clearInterval(typeWriter);
+                                    }
+                                }, 50);
+                            }
+                        }, 200);
+
+                    }, 200); 
+                }
                 counter.innerText = progress + '%';
             }, 60);
         });
@@ -509,7 +648,7 @@
                 faq1Q: "Apa latar belakang pendidikan Anda?", faq1A: "Saya meraih gelar Sarjana Sosiologi Pembangunan dari UIN Sunan Gunung Djati Bandung (2019-2024), dan sebelumnya bersekolah di SMA Islam Darul Ulum (2014-2017).",
                 faq2Q: "Apa keahlian utama dan alat yang Anda gunakan?", faq2A: "I specialize in project management, digital administration, graphic design, and copywriting. I regularly utilize AI productivity tools (ChatGPT, Claude, Gemini), Microsoft Office, Google Workspace, GitHub, Vercel, and Canva.",
                 faq3Q: "Apakah Anda memiliki pengalaman organisasi?", faq3A: "Ya, saya aktif berkontribusi di berbagai organisasi, termasuk menjabat sebagai Kepala Sponsorship di UPTQ (2023), Ketua Kewirausahaan di Koperasi Mahasiswa UIN Bandung, serta terlibat dalam inisiatif sosial bersama Yayasan RKPD.",
-                visitBtn: "KUNJUNGI PROYEK ↗", waTitle: "Kirim Pesan WhatsApp", emailTitle: "Kirim Email Cepat", sendBtn: "KIRIM VIA WA ↗", sendBtn2: "KIRIM EMAIL ↗",
+                visitBtn: "KUNJUNGI PROYEK ↗", waTitle: "Kirim Pesan WhatsApp", emailTitle: "Kirim Email Cepat", sendBtn: "KIRIM VIA WA ↗", sendBtn2: "KIRIM EMAIL ↗", viewCvBtn: "LIHAT CV ↗",
                 phName: "Nama Anda...", phEmail: "Email Anda...", phSubj: "Subjek...", phMsg: "Tulis pesan atau kolaborasi..."
             },
             en: {
@@ -523,7 +662,7 @@
                 faq1Q: "What is your educational background?", faq1A: "I hold a Bachelor's degree in Sociology (Sosiologi Pembangunan) from UIN Sunan Gunung Djati Bandung (2019-2024), and previously attended SMA Islam Darul Ulum (2014-2017).",
                 faq2Q: "What are your core skills and tools?", faq2A: "I specialize in project management, digital administration, graphic design, and copywriting. I regularly utilize AI productivity tools (ChatGPT, Claude, Gemini), Microsoft Office, Google Workspace, GitHub, Vercel, and Canva.",
                 faq3Q: "Do you have organizational experience?", faq3A: "Yes, I have actively contributed to various organizations, including serving as Head of Sponsorship at UPTQ (2023), Head of Entrepreneurship at Koperasi Mahasiswa UIN Bandung, and engaging in social initiatives with Yayasan RKPD.",
-                visitBtn: "VISIT PROJECT ↗", waTitle: "Send WhatsApp Message", emailTitle: "Send Quick Email", sendBtn: "SEND VIA WA ↗", sendBtn2: "SEND EMAIL ↗",
+                visitBtn: "VISIT PROJECT ↗", waTitle: "Send WhatsApp Message", emailTitle: "Send Quick Email", sendBtn: "SEND VIA WA ↗", sendBtn2: "SEND EMAIL ↗", viewCvBtn: "VIEW CV ↗",
                 phName: "Your Name...", phEmail: "Your Email...", phSubj: "Subject...", phMsg: "Write your message here..."
             }
         };
@@ -552,6 +691,8 @@
 
             const soundTxt = soundEnabled ? (currentLang === 'en' ? '🔊 SOUND' : '🔊 SUARA') : (currentLang === 'en' ? '🔇 MUTE' : '🔇 MATI');
             document.querySelectorAll('#sound-toggle').forEach(el => el.innerText = soundTxt);
+            
+            localStorage.setItem('lang', currentLang);
         }
 
         const projectData = {
@@ -563,6 +704,7 @@
 
         function openModal(type) {
             document.getElementById('modal-content-project').classList.add('hidden');
+            document.getElementById('modal-content-resume').classList.add('hidden');
             document.getElementById('modal-content-wa').classList.add('hidden');
             document.getElementById('modal-content-email').classList.add('hidden');
 
@@ -570,6 +712,8 @@
                 document.getElementById('modal-content-wa').classList.remove('hidden');
             } else if(type === 'emailModal') {
                 document.getElementById('modal-content-email').classList.remove('hidden');
+            } else if(type === 'resumeModal') {
+                document.getElementById('modal-content-resume').classList.remove('hidden');
             } else if(projectData[type]) {
                 const data = projectData[type];
                 document.getElementById('modal-title').innerText = data.title;
@@ -610,18 +754,85 @@
             });
         }
 
+        // COMMAND PALETTE LOGIC
+        function openCommandPalette() {
+            document.getElementById('command-palette').classList.remove('hidden');
+            document.getElementById('command-palette').classList.add('flex');
+            document.getElementById('cmd-input').focus();
+        }
+        function closeCommandPalette() {
+            document.getElementById('command-palette').classList.add('hidden');
+            document.getElementById('command-palette').classList.remove('flex');
+        }
+        function filterCommands(query) {
+            const list = document.getElementById('cmd-list');
+            const items = list.getElementsByTagName('div');
+            const q = query.toLowerCase();
+            for (let item of items) {
+                if (item.innerText.toLowerCase().includes(q)) {
+                    item.style.display = "flex";
+                } else {
+                    item.style.display = "none";
+                }
+            }
+        }
+        function execCmd(action) {
+            closeCommandPalette();
+            playClickSound();
+            if(action === 'home') showSection('home', document.querySelector('[data-i18n-nav="navHome"]'));
+            else if(action === 'projects') showSection('projects', document.querySelector('[data-i18n-nav="navProj"]'));
+            else if(action === 'notes') showSection('notes', document.querySelector('[data-i18n-nav="navNotes"]'));
+            else if(action === 'info') showSection('info', document.querySelector('[data-i18n-nav="navInfo"]'));
+            else if(action === 'contact') showSection('contact', document.querySelector('[data-i18n-nav="navCont"]'));
+            else if(action === 'faq') showSection('faq', document.querySelector('[data-i18n-nav="navFaq"]'));
+            else if(action === 'theme') setMode(document.body.classList.contains('dark-mode') ? 'light' : 'dark');
+            else if(action === 'teal') setMode('teal');
+            else if(action === 'lang') toggleLanguage();
+            else if(action === 'resume') openModal('resumeModal');
+        }
+
+        // KEYBOARD SHORTCUTS
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Escape') {
+                closeModal();
+                closeCommandPalette();
+            }
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                if (document.getElementById('command-palette').classList.contains('hidden')) {
+                    openCommandPalette();
+                } else {
+                    closeCommandPalette();
+                }
+            }
+            // Shortcut huruf tunggal jika tidak sedang mengetik di input/textarea
+            if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+                if (e.key.toLowerCase() === 'h') showSection('home', document.querySelector('[data-i18n-nav="navHome"]'));
+                if (e.key.toLowerCase() === 'p') showSection('projects', document.querySelector('[data-i18n-nav="navProj"]'));
+                if (e.key.toLowerCase() === 'n') showSection('notes', document.querySelector('[data-i18n-nav="navNotes"]'));
+                if (e.key.toLowerCase() === 'i') showSection('info', document.querySelector('[data-i18n-nav="navInfo"]'));
+                if (e.key.toLowerCase() === 'c') showSection('contact', document.querySelector('[data-i18n-nav="navCont"]'));
+                if (e.key.toLowerCase() === 'f') showSection('faq', document.querySelector('[data-i18n-nav="navFaq"]'));
+                if (e.key.toLowerCase() === 't') setMode(document.body.classList.contains('dark-mode') ? 'light' : 'dark');
+                if (e.key.toLowerCase() === 'l') toggleLanguage();
+            }
         });
 
         function setMode(mode) {
             const body = document.body;
+            localStorage.setItem('theme', mode);
+            
+            body.classList.remove('dark-mode', 'teal-mode');
+            
             if (mode === 'dark') {
                 body.classList.add('dark-mode');
                 document.querySelectorAll('#mode-light, #mobile-mode-light').forEach(e => { if(e) { e.innerHTML = '□ LIGHT'; e.classList.add('text-gray-500'); } });
                 document.querySelectorAll('#mode-dark, #mobile-mode-dark').forEach(e => { if(e) { e.innerHTML = '■ DARK'; e.classList.remove('text-gray-500'); } });
+            } else if (mode === 'teal') {
+                body.classList.add('teal-mode');
+                document.querySelectorAll('#mode-light, #mobile-mode-light').forEach(e => { if(e) { e.innerHTML = '□ LIGHT'; e.classList.add('text-gray-500'); } });
+                document.querySelectorAll('#mode-dark, #mobile-mode-dark').forEach(e => { if(e) { e.innerHTML = '□ DARK'; e.classList.add('text-gray-500'); } });
             } else {
-                body.classList.remove('dark-mode');
                 document.querySelectorAll('#mode-light, #mobile-mode-light').forEach(e => { if(e) { e.innerHTML = '■ LIGHT'; e.classList.remove('text-gray-500'); } });
                 document.querySelectorAll('#mode-dark, #mobile-mode-dark').forEach(e => { if(e) { e.innerHTML = '□ DARK'; e.classList.add('text-gray-500'); } });
             }
@@ -632,6 +843,8 @@
             isMono = !isMono; document.body.classList.toggle('sans-mode', !isMono);
             document.querySelectorAll('#mode-mono').forEach(e => { if(e) { e.innerHTML = isMono ? '■ MONO' : '□ MONO'; e.classList.toggle('text-gray-500', !isMono); } });
             document.querySelectorAll('#mobile-mode-mono').forEach(e => { if(e) { e.innerHTML = isMono ? '■ MONO' : '□ MONO'; e.classList.toggle('text-gray-500', !isMono); } });
+            
+            localStorage.setItem('mono', isMono);
         }
         
         document.getElementById('lang-label-m').innerText = 'ID';
