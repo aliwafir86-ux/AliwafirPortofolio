@@ -79,7 +79,7 @@
 
         .vertical-text { writing-mode: vertical-rl; transform: rotate(180deg); }
         
-        .content-section { display: none; height: 100%; width: 100%; }
+        .content-section { display: none; width: 100%; }
         .content-section.active { display: flex; flex-direction: column; justify-content: center; }
 
         #toast {
@@ -91,7 +91,7 @@
         #preloader {
             position: fixed; inset: 0; z-index: 100;
             background: #e2e8f0;
-            display: flex; flex-direction: column; items-center; justify-content: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
         }
         body.dark-mode #preloader {
@@ -103,7 +103,7 @@
         }
     </style>
 </head>
-<body class="h-screen w-screen overflow-hidden flex flex-col md:flex-row relative select-none">
+<body class="min-h-screen md:h-screen w-screen md:overflow-hidden flex flex-col md:flex-row relative select-none">
     
     <!-- MINIMALIST PRELOADER -->
     <div id="preloader">
@@ -157,11 +157,11 @@
         </div>
     </div>
 
-    <!-- Area Konten Utama -->
-    <div class="w-full md:w-2/3 flex-1 h-full relative p-8 md:p-12 z-10 overflow-hidden">
+    <!-- Area Konten Utama (Diberikan overflow-y-auto dan pb-28 di mobile agar tidak terpotong) -->
+    <div class="w-full md:w-2/3 flex-1 md:h-full relative p-8 md:p-12 z-10 overflow-y-auto md:overflow-hidden pb-28 md:pb-12">
         
-        <div id="home" class="content-section active relative">
-            <div class="flex md:absolute top-0 md:top-2 left-0 md:left-4 gap-6 md:gap-8 text-[11px] font-medium border-l border-black dark:border-white pl-4 mb-6 md:mb-0">
+        <div id="home" class="content-section active relative min-h-[50vh] md:min-h-full">
+            <div class="flex md:absolute top-0 md:top-2 left-0 md:left-4 gap-6 md:gap-8 text-[11px] font-medium border-l border-black dark:border-white pl-4 mb-8 md:mb-0">
                 <div>
                     <p class="text-base md:text-lg font-light">1,000+</p>
                     <p class="text-gray-500">Beneficiaries</p>
@@ -176,14 +176,14 @@
                 </div>
             </div>
 
-            <div class="md:absolute bottom-6 right-6 lg:right-12 text-left md:text-right max-w-sm text-[11px] font-normal leading-relaxed">
+            <div class="md:absolute bottom-6 right-6 lg:right-12 text-left md:text-right max-w-sm text-[11px] font-normal leading-relaxed mt-4 md:mt-0">
                 <p>Based in Bandung, Jawa Barat.</p><br>
                 <p>I am a Sociology of Development graduate from UIN Sunan Gunung Djati Bandung.</p><br>
                 <p>With a strong interest in social research, communication, and creative design, I have experience managing social programs, digital administration, and developing foundation initiatives.</p>
             </div>
         </div>
 
-        <div id="projects" class="content-section items-start md:items-end justify-center gap-5 md:gap-8 pr-0 md:pr-8">
+        <div id="projects" class="content-section items-start md:items-end justify-center gap-6 md:gap-8 pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
             <div onclick="openModal('ysb')" class="text-left md:text-right group cursor-pointer">
                 <h2 class="text-xl md:text-3xl font-light mb-1 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
                     Yayasan Sarana Berbagi <i class="fa-solid fa-circle-info text-xs md:text-sm opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
@@ -213,7 +213,7 @@
             </div>
         </div>
 
-        <div id="info" class="content-section items-start md:items-end justify-center gap-6 md:gap-8 pr-0 md:pr-8">
+        <div id="info" class="content-section items-start md:items-end justify-center gap-6 md:gap-8 pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
             <div class="grid grid-cols-2 md:flex md:flex-col gap-3 font-medium text-[11px] md:text-xs">
                 <a href="https://www.instagram.com/mazaimza/" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56">
                     <span>↗</span> <span class="flex items-center gap-1.5">IG Personal <i class="fa-brands fa-instagram text-xs"></i></span>
@@ -235,7 +235,7 @@
                 </a>
             </div>
             
-            <div class="text-left md:text-right text-[11px] font-normal leading-relaxed">
+            <div class="text-left md:text-right text-[11px] font-normal leading-relaxed mt-2">
                 <p class="text-gray-500 mb-1">Current Focus:</p>
                 <p>• Project Management</p>
                 <p>• AI Tools Productivity</p>
@@ -244,12 +244,12 @@
             </div>
         </div>
 
-        <div id="contact" class="content-section items-center justify-center pr-0 md:pr-8">
+        <div id="contact" class="content-section items-center justify-center pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
             <div class="text-center">
                 <p class="text-base md:text-lg mb-6 font-light">Let's build something impactful together.</p>
                 
                 <div class="flex flex-col md:flex-row items-center justify-center gap-3 mb-5">
-                    <a href="mailto:aliwafir86@gmail.com" class="text-base md:text-xl font-medium hover:line-through border-b border-black transition-colors pb-1 inline-flex items-center gap-2">
+                    <a href="mailto:aliwafir86@gmail.com" class="text-sm md:text-xl font-medium hover:line-through border-b border-black transition-colors pb-1 inline-flex items-center gap-2">
                         <i class="fa-regular fa-envelope"></i> aliwafir86@gmail.com
                     </a>
                     <button onclick="copyText('aliwafir86@gmail.com')" class="text-[10px] border border-black dark:border-white px-2 py-1 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">COPY</button>
@@ -264,8 +264,8 @@
             </div>
         </div>
 
-        <div id="faq" class="content-section justify-center pr-0 md:pr-8">
-            <div class="max-w-md ml-auto flex flex-col gap-4 md:gap-6 text-[11px] font-normal">
+        <div id="faq" class="content-section justify-center pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
+            <div class="max-w-md ml-auto flex flex-col gap-4 md:gap-6 text-[11px] font-normal my-4">
                 <div>
                     <h3 class="mb-1 text-black transition-colors font-medium flex items-center gap-2">
                         <i class="fa-solid fa-graduation-cap text-gray-500"></i> What is your educational background?
