@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,13 +14,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("RsadPxDhwvHvGOgVk");
+        })();
+    </script>
+    
     <style>
-        /* Font IBM Plex Mono */
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,700;1,400&display=swap');
         
-        * {
-            cursor: none !important;
-        }
+        * { cursor: none !important; }
 
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
@@ -37,9 +42,7 @@
             transition: color 0.3s;
         }
 
-        body.sans-mode {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-        }
+        body.sans-mode { font-family: 'Helvetica Neue', Arial, sans-serif; }
 
         body.dark-mode {
             background: linear-gradient(-45deg, #090d16, #1e1b4b, #0f172a, #064e3b);
@@ -79,33 +82,40 @@
 
         .vertical-text { writing-mode: vertical-rl; transform: rotate(180deg); }
         
-        .content-section { display: none; width: 100%; }
-        .content-section.active { display: flex; flex-direction: column; justify-content: center; }
-
-        #toast {
-            opacity: 0; transform: translateY(20px); transition: all 0.3s ease;
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+        
+        .content-section { display: none; width: 100%; }
+        .content-section.active { 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        #toast { opacity: 0; transform: translateY(20px); transition: all 0.3s ease; }
         #toast.show { opacity: 1; transform: translateY(0); }
 
-        /* Style Preloader */
         #preloader {
             position: fixed; inset: 0; z-index: 100;
-            background: #e2e8f0;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: #e2e8f0; display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
         }
-        body.dark-mode #preloader {
-            background: #090d16;
+        body.dark-mode #preloader { background: #090d16; }
+        #preloader.fade-out { opacity: 0; visibility: hidden; }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
-        #preloader.fade-out {
-            opacity: 0;
-            visibility: hidden;
-        }
+        .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 25s linear infinite; }
     </style>
 </head>
 <body class="min-h-screen md:h-screen w-screen md:overflow-hidden flex flex-col md:flex-row relative select-none">
     
-    <!-- MINIMALIST PRELOADER -->
+    <!-- PRELOADER -->
     <div id="preloader">
         <div class="text-center">
             <p class="text-[11px] md:text-xs font-light tracking-[0.25em] mb-3 text-gray-500 uppercase">MUHAMMAD ALI WAFIR © 2026</p>
@@ -114,18 +124,19 @@
     </div>
 
     <div id="custom-cursor"></div>
-    <div id="toast" class="fixed bottom-24 md:bottom-6 right-6 z-50 bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-[10px] font-medium shadow-lg">Copied to clipboard!</div>
+    <div id="toast" class="fixed bottom-28 md:bottom-6 right-6 z-50 bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-[10px] font-medium shadow-lg" data-i18n="copied">Tersalin ke papan klip!</div>
     <div class="bg-noise"></div>
 
-    <!-- FRAME TIPIS ESTETIK -->
+    <!-- FRAME ESTETIK -->
     <div class="fixed top-2 bottom-2 left-2 right-2 md:top-3 md:bottom-3 md:left-3 md:right-3 border border-black/15 dark:border-white/15 pointer-events-none z-[60] transition-colors duration-300"></div>
 
     <!-- Sisi Kiri: Teks Vertikal Bar (Desktop) -->
     <div class="hidden md:flex w-[4.5rem] pl-3 h-full border-r border-gray-400/50 flex-col justify-end items-center pb-10 text-[10px] font-medium tracking-widest z-10 transition-colors">
         <div class="vertical-text flex gap-5">
-            <span id="mode-light" onclick="setMode('light')" class="hover:opacity-50 transition-opacity">■ LIGHT</span>
-            <span id="mode-dark" onclick="setMode('dark')" class="hover:opacity-50 transition-opacity text-gray-500">□ DARK</span>
-            <span id="mode-mono" onclick="toggleMono()" class="hover:opacity-50 transition-opacity">■ MONOSPACED</span>
+            <span id="mode-light" onclick="setMode('light')" class="hover:opacity-50 transition-opacity cursor-pointer">■ LIGHT</span>
+            <span id="mode-dark" onclick="setMode('dark')" class="hover:opacity-50 transition-opacity text-gray-500 cursor-pointer">□ DARK</span>
+            <span id="mode-mono" onclick="toggleMono()" class="hover:opacity-50 transition-opacity cursor-pointer">■ MONO</span>
+            <span id="lang-switch-desk" onclick="toggleLanguage()" class="hover:opacity-50 transition-opacity text-sky-600 dark:text-sky-400 cursor-pointer">🌐 ID / EN</span>
         </div>
     </div>
 
@@ -135,117 +146,139 @@
             <div class="flex items-center justify-between gap-2 text-[10px] font-medium text-gray-500 mb-4">
                 <span id="wib-clock"><i class="fa-regular fa-clock"></i> --:--:-- WIB</span>
                 <span class="inline-flex items-center gap-1.5 text-green-600 dark:text-green-400">
-                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> AVAILABLE
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> <span data-i18n="avail">TERSEDIA</span>
                 </span>
             </div>
 
-            <!-- Mobile Mode Switcher (Hanya tampil di HP) -->
+            <!-- Mobile Mode & Lang Switcher -->
             <div class="flex md:hidden items-center justify-between text-[10px] font-medium border-b border-gray-400/30 pb-3 mb-6">
-                <div class="flex gap-4">
-                    <span id="mobile-mode-light" onclick="setMode('light')" class="hover:opacity-50 transition-opacity">■ LIGHT</span>
-                    <span id="mobile-mode-dark" onclick="setMode('dark')" class="hover:opacity-50 transition-opacity text-gray-500">□ DARK</span>
+                <div class="flex gap-3">
+                    <span id="mobile-mode-light" onclick="setMode('light')" class="hover:opacity-50 transition-opacity cursor-pointer">■ LIGHT</span>
+                    <span id="mobile-mode-dark" onclick="setMode('dark')" class="hover:opacity-50 transition-opacity text-gray-500 cursor-pointer">□ DARK</span>
                 </div>
-                <span id="mobile-mode-mono" onclick="toggleMono()" class="hover:opacity-50 transition-opacity">■ MONO</span>
+                <div class="flex gap-3">
+                    <span id="mobile-mode-mono" onclick="toggleMono()" class="hover:opacity-50 transition-opacity cursor-pointer">■ MONO</span>
+                    <span onclick="toggleLanguage()" class="text-sky-600 dark:text-sky-400 cursor-pointer font-bold">🌐 <span id="lang-label-m">EN</span></span>
+                </div>
             </div>
 
-            <h1 class="text-3xl md:text-[2.25rem] leading-tight font-light mb-3 tracking-tight">Muhammad Ali <br> Wafir</h1>
-            <p class="text-[11px] font-medium text-gray-700 mb-6 md:mb-16 transition-colors">Sociology Graduate & Project Manager</p>
+            <h1 class="text-3xl md:text-[2.25rem] leading-tight font-light mb-2 tracking-tight">Muhammad Ali <br> Wafir</h1>
+            <p class="text-[11px] font-medium text-gray-700 mb-6 md:mb-12 transition-colors" data-i18n="role">Lulusan Sosiologi & Manajer Proyek</p>
 
-            <nav class="hidden md:flex flex-col gap-4 font-medium text-base">
-                <button onclick="showSection('home', this)" data-text="Home" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">■</button>
-                <button onclick="showSection('projects', this)" data-text="Projects" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Projects</button>
-                <button onclick="showSection('info', this)" data-text="Info" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Info</button>
-                <button onclick="showSection('contact', this)" data-text="Contact" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Contact</button>
-                <button onclick="showSection('faq', this)" data-text="FAQ" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">FAQ</button>
+            <nav class="hidden md:flex flex-col gap-3 font-medium text-sm">
+                <button onclick="showSection('home', this)" data-text="Beranda" data-i18n-nav="navHome" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">■</button>
+                <button onclick="showSection('projects', this)" data-text="Proyek" data-i18n-nav="navProj" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Proyek</button>
+                <button onclick="showSection('notes', this)" data-text="Catatan" data-i18n-nav="navNotes" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Catatan</button>
+                <button onclick="showSection('info', this)" data-text="Info" data-i18n-nav="navInfo" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Info</button>
+                <button onclick="showSection('contact', this)" data-text="Kontak" data-i18n-nav="navCont" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Kontak</button>
+                <button onclick="showSection('faq', this)" data-text="FAQ" data-i18n-nav="navFaq" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">FAQ</button>
             </nav>
         </div>
         
         <div class="hidden md:block text-[10px] font-medium text-gray-500 transition-colors">
-            <p>[1-5] Keyboard Navigation Enabled</p>
             <p>© Ali Wafir 2026</p>
         </div>
     </div>
 
     <!-- Area Konten Utama -->
-    <div class="w-full md:w-2/3 flex-1 md:h-full relative p-8 md:p-12 z-10 overflow-y-auto md:overflow-hidden pb-28 md:pb-12">
+    <div class="w-full md:w-2/3 flex-1 md:h-full relative p-8 md:p-12 z-10 overflow-y-auto md:overflow-hidden pb-32 md:pb-12">
         
+        <!-- HOME SECTION -->
         <div id="home" class="content-section active relative min-h-[50vh] md:min-h-full">
             <div class="flex md:absolute top-0 md:top-2 left-0 md:left-4 gap-6 md:gap-8 text-[11px] font-medium border-l border-black dark:border-white pl-4 mb-8 md:mb-0">
                 <div>
                     <p class="text-base md:text-lg font-light">1,000+</p>
-                    <p class="text-gray-500">Beneficiaries</p>
+                    <p class="text-gray-500" data-i18n="bene">Penerima Manfaat</p>
                 </div>
                 <div>
-                    <p class="text-base md:text-lg font-light">3 Main</p>
-                    <p class="text-gray-500">Social Initiatives</p>
+                    <p class="text-base md:text-lg font-light">3 Utama</p>
+                    <p class="text-gray-500" data-i18n="init">Inisiatif Sosial</p>
                 </div>
                 <div>
                     <p class="text-base md:text-lg font-light">2026</p>
-                    <p class="text-gray-500">Active Growth</p>
+                    <p class="text-gray-500" data-i18n="growth">Pertumbuhan Aktif</p>
                 </div>
             </div>
 
-            <div class="md:absolute bottom-6 right-6 lg:right-12 text-left md:text-right max-w-sm text-[11px] font-normal leading-relaxed mt-4 md:mt-0">
-                <p>Based in Bandung, Jawa Barat.</p><br>
-                <p>I am a Sociology of Development graduate from UIN Sunan Gunung Djati Bandung.</p><br>
-                <p>With a strong interest in social research, communication, and creative design, I have experience managing social programs, digital administration, and developing foundation initiatives.</p>
+            <div class="md:absolute bottom-16 md:bottom-20 right-6 lg:right-12 text-left md:text-right max-w-sm text-[11px] font-normal leading-relaxed mt-4 md:mt-0 z-10">
+                <p data-i18n="loc">Berbasis di Bandung, Jawa Barat.</p><br>
+                <p data-i18n="eduBio">Saya adalah lulusan Sosiologi Pembangunan dari UIN Sunan Gunung Djati Bandung.</p><br>
+                <p data-i18n="expBio">Dengan minat kuat pada riset sosial, komunikasi, dan desain kreatif, saya berpengalaman mengelola program sosial, administrasi digital, dan mengembangkan inisiatif yayasan.</p>
+            </div>
+
+            <!-- RUNNING TEXT SKILLS -->
+            <div class="absolute bottom-0 left-0 right-0 overflow-hidden border-t border-black/10 dark:border-white/10 py-2.5 opacity-60">
+                <div class="animate-marquee text-[10px] font-medium tracking-widest text-gray-600 dark:text-gray-400">
+                    PROJECT MANAGEMENT ■ SOCIAL RESEARCH ■ AI PRODUCTIVITY ■ DIGITAL ADMINISTRATION ■ CREATIVE DESIGN ■ WEB BRANDING ■ COMMUNITY DEVELOPMENT ■ PROJECT MANAGEMENT ■ SOCIAL RESEARCH ■ AI PRODUCTIVITY ■ DIGITAL ADMINISTRATION ■ CREATIVE DESIGN ■ WEB BRANDING ■ COMMUNITY DEVELOPMENT ■
+                </div>
             </div>
         </div>
 
-        <div id="projects" class="content-section items-start md:items-end justify-center gap-6 md:gap-8 pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
-            <div onclick="openModal('ysb')" class="text-left md:text-right group cursor-pointer">
-                <h2 class="text-xl md:text-3xl font-light mb-1 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
-                    Yayasan Sarana Berbagi <i class="fa-solid fa-circle-info text-xs md:text-sm opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                </h2>
-                <p class="text-[10px] md:text-[11px] font-medium text-gray-600 transition-colors">2025-2026 / Project Manager / Social Welfare</p>
+        <!-- PROJECTS SECTION -->
+        <div id="projects" class="content-section items-start md:items-end justify-center gap-4 md:gap-6 pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
+            <div class="flex gap-2 text-[10px] font-medium mb-2 w-full md:justify-end flex-wrap">
+                <button onclick="filterProjects('all')" class="cat-btn border border-black dark:border-white px-2 py-1 bg-black text-white dark:bg-white dark:text-black transition-all" data-cat="all" data-i18n="catAll">Semua</button>
+                <button onclick="filterProjects('social')" class="cat-btn border border-black/40 dark:border-white/40 px-2 py-1 transition-all hover:border-black dark:hover:border-white" data-cat="social" data-i18n="catSoc">Sosial</button>
+                <button onclick="filterProjects('business')" class="cat-btn border border-black/40 dark:border-white/40 px-2 py-1 transition-all hover:border-black dark:hover:border-white" data-cat="business" data-i18n="catBus">Bisnis</button>
+                <button onclick="filterProjects('creative')" class="cat-btn border border-black/40 dark:border-white/40 px-2 py-1 transition-all hover:border-black dark:hover:border-white" data-cat="creative" data-i18n="catCre">Kreatif</button>
             </div>
 
-            <div onclick="openModal('ice')" class="text-left md:text-right group cursor-pointer">
-                <h2 class="text-xl md:text-3xl font-light mb-1 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
-                    Ice KulCool <i class="fa-solid fa-circle-info text-xs md:text-sm opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                </h2>
-                <p class="text-[10px] md:text-[11px] font-medium text-gray-600 transition-colors">Entrepreneurship / Founder & Web Branding</p>
-            </div>
-
-            <div onclick="openModal('rkpd')" class="text-left md:text-right group cursor-pointer">
-                <h2 class="text-xl md:text-3xl font-light mb-1 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
-                    Yayasan RKPD <i class="fa-solid fa-circle-info text-xs md:text-sm opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                </h2>
-                <p class="text-[10px] md:text-[11px] font-medium text-gray-600 transition-colors">2019-2024 / Education / Social Worker</p>
-            </div>
-
-            <div onclick="openModal('photo')" class="text-left md:text-right group cursor-pointer">
-                <h2 class="text-xl md:text-3xl font-light mb-1 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
-                    Graphic & Photography <i class="fa-solid fa-circle-info text-xs md:text-sm opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                </h2>
-                <p class="text-[10px] md:text-[11px] font-medium text-gray-600 transition-colors">Social Media Content / Creative Portfolio</p>
+            <div id="project-list" class="flex flex-col gap-4 w-full md:items-end">
+                <div onclick="openModal('ysb')" class="project-item text-left md:text-right group cursor-pointer w-full hover:-translate-y-0.5 hover:scale-[1.01] transition-transform duration-300" data-category="social">
+                    <h2 class="text-xl md:text-2xl font-light mb-0.5 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
+                        Yayasan Sarana Berbagi <i class="fa-solid fa-circle-info text-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </h2>
+                    <p class="text-[10px] md:text-[11px] font-medium text-gray-600">2025-2026 / Project Manager / Social Welfare</p>
+                </div>
+                <div onclick="openModal('ice')" class="project-item text-left md:text-right group cursor-pointer w-full hover:-translate-y-0.5 hover:scale-[1.01] transition-transform duration-300" data-category="business">
+                    <h2 class="text-xl md:text-2xl font-light mb-0.5 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
+                        Ice KulCool <i class="fa-solid fa-circle-info text-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </h2>
+                    <p class="text-[10px] md:text-[11px] font-medium text-gray-600">Entrepreneurship / Founder & Web Branding</p>
+                </div>
+                <div onclick="openModal('rkpd')" class="project-item text-left md:text-right group cursor-pointer w-full hover:-translate-y-0.5 hover:scale-[1.01] transition-transform duration-300" data-category="social">
+                    <h2 class="text-xl md:text-2xl font-light mb-0.5 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
+                        Yayasan RKPD <i class="fa-solid fa-circle-info text-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </h2>
+                    <p class="text-[10px] md:text-[11px] font-medium text-gray-600">2019-2024 / Education / Social Worker</p>
+                </div>
+                <div onclick="openModal('photo')" class="project-item text-left md:text-right group cursor-pointer w-full hover:-translate-y-0.5 hover:scale-[1.01] transition-transform duration-300" data-category="creative">
+                    <h2 class="text-xl md:text-2xl font-light mb-0.5 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
+                        Graphic & Photography <i class="fa-solid fa-circle-info text-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </h2>
+                    <p class="text-[10px] md:text-[11px] font-medium text-gray-600">Social Media Content / Creative Portfolio</p>
+                </div>
             </div>
         </div>
 
+        <!-- NOTES SECTION -->
+        <div id="notes" class="content-section items-start md:items-end justify-center gap-6 pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
+            <div class="max-w-md ml-auto flex flex-col gap-4 text-[11px] font-normal my-4 w-full text-left md:text-right">
+                <div class="border-b border-gray-400/40 pb-3 hover:bg-black/5 dark:hover:bg-white/5 p-2 transition-colors rounded-sm cursor-pointer">
+                    <span class="text-[9px] text-gray-500">June 2026 • Insights</span>
+                    <h3 class="font-medium text-sm mt-0.5 mb-1" data-i18n="note1Title">Pendekatan Sosiologis dalam Program Sosial</h3>
+                    <p class="text-gray-600 leading-relaxed" data-i18n="note1Desc">Bagaimana pemetaan komunitas akar rumput menentukan ketepatan sasaran distribusi bantuan hingga 100%.</p>
+                </div>
+                <div class="border-b border-gray-400/40 pb-3 hover:bg-black/5 dark:hover:bg-white/5 p-2 transition-colors rounded-sm cursor-pointer">
+                    <span class="text-[9px] text-gray-500">May 2026 • Productive AI</span>
+                    <h3 class="font-medium text-sm mt-0.5 mb-1" data-i18n="note2Title">Efisiensi Administrasi Yayasan dengan AI</h3>
+                    <p class="text-gray-600 leading-relaxed" data-i18n="note2Desc">Memanfaatkan model bahasa dan otomasi untuk mempercepat pembuatan proposal serta laporan pertanggungjawaban.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- INFO SECTION -->
         <div id="info" class="content-section items-start md:items-end justify-center gap-6 md:gap-8 pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
-            <div class="grid grid-cols-2 md:flex md:flex-col gap-3 font-medium text-[11px] md:text-xs">
-                <a href="https://www.instagram.com/mazaimza/" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56">
-                    <span>↗</span> <span class="flex items-center gap-1.5">IG Personal <i class="fa-brands fa-instagram text-xs"></i></span>
-                </a>
-                <a href="https://www.instagram.com/is_photography810/" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56">
-                    <span>↗</span> <span class="flex items-center gap-1.5">IG Photo <i class="fa-solid fa-camera text-xs"></i></span>
-                </a>
-                <a href="https://www.instagram.com/ice_kulcool/" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56">
-                    <span>↗</span> <span class="flex items-center gap-1.5">IG Bisnis <i class="fa-solid fa-ice-cream text-[10px]"></i></span>
-                </a>
-                <a href="https://ice-kulcool-pro.vercel.app" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56">
-                    <span>↗</span> <span class="flex items-center gap-1.5">Web Bisnis <i class="fa-solid fa-globe text-[10px]"></i></span>
-                </a>
-                <a href="https://github.com" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56">
-                    <span>↗</span> <span class="flex items-center gap-1.5">GitHub <i class="fa-brands fa-github text-xs"></i></span>
-                </a>
-                <a href="https://www.linkedin.com/in/muhammad-ali-wafir-8a86741ab" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56">
-                    <span>↗</span> <span class="flex items-center gap-1.5">LinkedIn <i class="fa-brands fa-linkedin text-xs"></i></span>
-                </a>
+            <div class="grid grid-cols-2 md:flex md:flex-col gap-3 font-medium text-[11px] md:text-xs w-full md:w-auto">
+                <a href="https://www.instagram.com/mazaimza/" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">IG Personal <i class="fa-brands fa-instagram text-xs"></i></span></a>
+                <a href="https://www.instagram.com/is_photography810/" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">IG Photo <i class="fa-solid fa-camera text-xs"></i></span></a>
+                <a href="https://www.instagram.com/ice_kulcool/" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">IG Bisnis <i class="fa-solid fa-ice-cream text-[10px]"></i></span></a>
+                <a href="https://ice-kulcool-pro.vercel.app" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">Web Bisnis <i class="fa-solid fa-globe text-[10px]"></i></span></a>
+                <a href="https://github.com" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">GitHub <i class="fa-brands fa-github text-xs"></i></span></a>
+                <a href="https://www.linkedin.com/in/muhammad-ali-wafir-8a86741ab" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">LinkedIn <i class="fa-brands fa-linkedin text-xs"></i></span></a>
             </div>
-            
-            <div class="text-left md:text-right text-[11px] font-normal leading-relaxed mt-2">
-                <p class="text-gray-500 mb-1">Current Focus:</p>
+            <div class="text-left md:text-right text-[11px] font-normal leading-relaxed mt-4 md:mt-2">
+                <p class="text-gray-500 mb-1" data-i18n="focus">Fokus Saat Ini:</p>
                 <p>• Project Management</p>
                 <p>• AI Tools Productivity</p>
                 <p>• Social Research</p>
@@ -253,123 +286,245 @@
             </div>
         </div>
 
+        <!-- CONTACT SECTION -->
         <div id="contact" class="content-section items-center justify-center pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
-            <div class="text-center">
-                <p class="text-base md:text-lg mb-6 font-light">Let's build something impactful together.</p>
+            <div class="max-w-sm w-full text-center">
+                <p class="text-base md:text-lg mb-8 font-light" data-i18n="contactHero">Mari bangun sesuatu yang berdampak bersama.</p>
                 
-                <div class="flex flex-col md:flex-row items-center justify-center gap-3 mb-5">
-                    <a href="mailto:aliwafir86@gmail.com" class="text-sm md:text-xl font-medium hover:line-through border-b border-black transition-colors pb-1 inline-flex items-center gap-2">
-                        <i class="fa-regular fa-envelope"></i> aliwafir86@gmail.com
-                    </a>
-                    <button onclick="copyText('aliwafir86@gmail.com')" class="text-[10px] border border-black dark:border-white px-2 py-1 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">COPY</button>
+                <div class="flex flex-col gap-4">
+                    <button onclick="openModal('emailModal')" class="w-full border border-black dark:border-white py-3 px-4 font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black hover:-translate-y-1 transition-all flex justify-between items-center text-xs">
+                        <span class="flex items-center gap-3"><i class="fa-regular fa-envelope text-base"></i> <span data-i18n="btnEmail">Kirim Email</span></span> <span>↗</span>
+                    </button>
+                    <button onclick="openModal('waModal')" class="w-full border border-black dark:border-white py-3 px-4 font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black hover:-translate-y-1 transition-all flex justify-between items-center text-xs">
+                        <span class="flex items-center gap-3"><i class="fa-brands fa-whatsapp text-base"></i> <span data-i18n="btnWa">Pesan WhatsApp</span></span> <span>↗</span>
+                    </button>
                 </div>
                 
-                <div class="flex flex-col md:flex-row items-center justify-center gap-3">
-                    <a href="https://wa.me/6287859962552" target="_blank" class="text-sm md:text-base font-medium hover:line-through inline-flex items-center gap-2">
-                        <i class="fa-brands fa-whatsapp text-lg text-green-600"></i> 0878-5996-2552 <span>↗</span>
-                    </a>
-                    <button onclick="copyText('087859962552')" class="text-[10px] border border-black dark:border-white px-2 py-1 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">COPY</button>
+                <div class="mt-8 text-[10px] text-gray-500 flex justify-center gap-4">
+                    <span class="cursor-pointer hover:text-black dark:hover:text-white transition-colors" onclick="copyText('aliwafir86@gmail.com')">COPY EMAIL</span>
+                    <span class="cursor-pointer hover:text-black dark:hover:text-white transition-colors" onclick="copyText('087859962552')">COPY WA</span>
                 </div>
             </div>
         </div>
 
+        <!-- FAQ SECTION -->
         <div id="faq" class="content-section justify-center pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
             <div class="max-w-md ml-auto flex flex-col gap-4 md:gap-6 text-[11px] font-normal my-4">
                 <div>
                     <h3 class="mb-1 text-black transition-colors font-medium flex items-center gap-2">
-                        <i class="fa-solid fa-graduation-cap text-gray-500"></i> What is your educational background?
+                        <i class="fa-solid fa-graduation-cap text-gray-500"></i> <span data-i18n="faq1Q">Apa latar belakang pendidikan Anda?</span>
                     </h3>
-                    <p class="text-gray-700 transition-colors leading-relaxed">I hold a Bachelor's degree in Sociology (Sosiologi Pembangunan) from UIN Sunan Gunung Djati Bandung (2019-2024), and previously attended SMA Islam Darul Ulum (2014-2017).</p>
+                    <p class="text-gray-700 transition-colors leading-relaxed" data-i18n="faq1A">Saya meraih gelar Sarjana Sosiologi Pembangunan dari UIN Sunan Gunung Djati Bandung (2019-2024), dan sebelumnya bersekolah di SMA Islam Darul Ulum (2014-2017).</p>
                 </div>
                 <div>
                     <h3 class="mb-1 text-black transition-colors font-medium flex items-center gap-2">
-                        <i class="fa-solid fa-screwdriver-wrench text-gray-500"></i> What are your core skills and tools?
+                        <i class="fa-solid fa-screwdriver-wrench text-gray-500"></i> <span data-i18n="faq2Q">Apa keahlian utama dan alat yang Anda gunakan?</span>
                     </h3>
-                    <p class="text-gray-700 transition-colors leading-relaxed">I specialize in project management, digital administration, graphic design, and copywriting. I regularly utilize AI productivity tools (ChatGPT, Claude, Gemini), Microsoft Office, Google Workspace, GitHub, Vercel, and Canva.</p>
+                    <p class="text-gray-700 transition-colors leading-relaxed" data-i18n="faq2A">Saya berspesialisasi dalam manajemen proyek, administrasi digital, desain grafis, dan copywriting. Saya sering memanfaatkan alat produktivitas AI (ChatGPT, Claude, Gemini), Microsoft Office, Google Workspace, GitHub, Vercel, dan Canva.</p>
                 </div>
                 <div>
                     <h3 class="mb-1 text-black transition-colors font-medium flex items-center gap-2">
-                        <i class="fa-solid fa-users text-gray-500"></i> Do you have organizational experience?
+                        <i class="fa-solid fa-users text-gray-500"></i> <span data-i18n="faq3Q">Apakah Anda memiliki pengalaman organisasi?</span>
                     </h3>
-                    <p class="text-gray-700 transition-colors leading-relaxed">Yes, I have actively contributed to various organizations, including serving as Head of Sponsorship at UPTQ (2023), Head of Entrepreneurship at Koperasi Mahasiswa UIN Bandung, and engaging in social initiatives with Yayasan RKPD.</p>
+                    <p class="text-gray-700 transition-colors leading-relaxed" data-i18n="faq3A">Ya, saya aktif berkontribusi di berbagai organisasi, termasuk menjabat sebagai Kepala Sponsorship di UPTQ (2023), Ketua Kewirausahaan di Koperasi Mahasiswa UIN Bandung, serta terlibat dalam inisiatif sosial bersama Yayasan RKPD.</p>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Navigasi Bawah Khusus Mobile -->
-    <div class="flex md:hidden fixed bottom-0 left-0 w-full bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md justify-around p-2 pb-6 z-50 font-medium text-[10px] border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-        <button onclick="showSection('home', this)" data-target="home" class="nav-btn-mobile text-black dark:text-white bg-gray-200 dark:bg-gray-800 flex flex-col items-center justify-center gap-1 w-14 py-2 rounded-xl transition-all">
-            <i class="fa-solid fa-house text-base"></i><span class="font-normal tracking-wide">Home</span>
-        </button>
-        <button onclick="showSection('projects', this)" data-target="projects" class="nav-btn-mobile text-gray-500 hover:text-black dark:hover:text-white flex flex-col items-center justify-center gap-1 w-14 py-2 rounded-xl transition-all">
-            <i class="fa-solid fa-folder-open text-base"></i><span class="font-normal tracking-wide">Projects</span>
-        </button>
-        <button onclick="showSection('info', this)" data-target="info" class="nav-btn-mobile text-gray-500 hover:text-black dark:hover:text-white flex flex-col items-center justify-center gap-1 w-14 py-2 rounded-xl transition-all">
-            <i class="fa-solid fa-user text-base"></i><span class="font-normal tracking-wide">Info</span>
-        </button>
-        <button onclick="showSection('contact', this)" data-target="contact" class="nav-btn-mobile text-gray-500 hover:text-black dark:hover:text-white flex flex-col items-center justify-center gap-1 w-14 py-2 rounded-xl transition-all">
-            <i class="fa-solid fa-envelope text-base"></i><span class="font-normal tracking-wide">Contact</span>
-        </button>
-        <button onclick="showSection('faq', this)" data-target="faq" class="nav-btn-mobile text-gray-500 hover:text-black dark:hover:text-white flex flex-col items-center justify-center gap-1 w-14 py-2 rounded-xl transition-all">
-            <i class="fa-solid fa-circle-question text-base"></i><span class="font-normal tracking-wide">FAQ</span>
-        </button>
+    <!-- Navigasi Bawah Khusus Mobile (6 Menu) -->
+    <div class="flex md:hidden fixed bottom-0 left-0 w-full bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md justify-around p-1.5 pb-5 z-50 font-medium text-[9px] border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <button onclick="showSection('home', this)" data-target="home" class="nav-btn-mobile text-black dark:text-white bg-gray-200 dark:bg-gray-800 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-house text-sm mb-0.5"></i><span data-i18n="navHome">Beranda</span></button>
+        <button onclick="showSection('projects', this)" data-target="projects" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-folder-open text-sm mb-0.5"></i><span data-i18n="navProj">Proyek</span></button>
+        <button onclick="showSection('notes', this)" data-target="notes" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-note-sticky text-sm mb-0.5"></i><span data-i18n="navNotes">Catatan</span></button>
+        <button onclick="showSection('info', this)" data-target="info" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-user text-sm mb-0.5"></i><span data-i18n="navInfo">Info</span></button>
+        <button onclick="showSection('contact', this)" data-target="contact" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-envelope text-sm mb-0.5"></i><span data-i18n="navCont">Kontak</span></button>
+        <button onclick="showSection('faq', this)" data-target="faq" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-circle-question text-sm mb-0.5"></i><span data-i18n="navFaq">FAQ</span></button>
     </div>
 
-    <!-- MODAL POPUP PREVIEW PROJECT -->
-    <div id="modal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-6">
-        <div class="modal-box bg-white border border-black max-w-lg w-full p-6 md:p-8 relative shadow-2xl transition-all">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-[10px] font-medium hover:opacity-50">✕ CLOSE [ESC]</button>
-            <h3 id="modal-title" class="text-xl md:text-2xl font-light mb-1">Project Title</h3>
-            <p id="modal-subtitle" class="text-[11px] font-medium text-gray-500 mb-4 md:mb-6">Subtitle / Role</p>
-            <p id="modal-desc" class="text-[11px] md:text-xs font-normal leading-relaxed mb-4 md:mb-6">Description goes here...</p>
-            <div id="modal-tags" class="flex flex-wrap gap-2 text-[10px] font-medium mb-6"></div>
-            <a id="modal-link" href="#" target="_blank" class="inline-block border border-black dark:border-white px-4 py-2 text-[10px] font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
-                VISIT PROJECT ↗
-            </a>
+    <!-- SEMUA POPUP / MODAL -->
+    <div id="master-modal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-6 transition-opacity duration-300">
+        <div class="modal-box bg-white border border-black max-w-lg w-full p-6 md:p-8 relative shadow-2xl transition-all scale-95 opacity-0 animate-[slideUpFade_0.3s_ease_forwards]">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-[10px] font-medium hover:opacity-50 transition-opacity">✕ CLOSE [ESC]</button>
+            
+            <!-- Isi Modal Project -->
+            <div id="modal-content-project" class="hidden">
+                <h3 id="modal-title" class="text-xl md:text-2xl font-light mb-1">Title</h3>
+                <p id="modal-subtitle" class="text-[11px] font-medium text-gray-500 mb-4 md:mb-6">Subtitle</p>
+                <p id="modal-desc" class="text-[11px] md:text-xs font-normal leading-relaxed mb-4 md:mb-6">Desc</p>
+                <div id="modal-tags" class="flex flex-wrap gap-2 text-[10px] font-medium mb-6"></div>
+                <a id="modal-link" href="#" target="_blank" class="inline-block border border-black dark:border-white px-4 py-2 text-[10px] font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all" data-i18n="visitBtn">KUNJUNGI PROYEK ↗</a>
+            </div>
+
+            <!-- Isi Modal WhatsApp -->
+            <div id="modal-content-wa" class="hidden">
+                <h3 class="text-lg md:text-xl font-light mb-5 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-green-500"></i> <span data-i18n="waTitle">Kirim Pesan WhatsApp</span></h3>
+                <input id="wa-name" type="text" data-i18n-ph="phName" placeholder="Nama Anda..." class="w-full bg-transparent border border-black/30 dark:border-white/30 p-2.5 mb-3 focus:outline-none focus:border-black dark:focus:border-white text-[11px]">
+                <textarea id="wa-msg" rows="4" data-i18n-ph="phMsg" placeholder="Tulis pesan atau tawaran kolaborasi..." class="w-full bg-transparent border border-black/30 dark:border-white/30 p-2.5 mb-4 focus:outline-none focus:border-black dark:focus:border-white text-[11px] resize-none"></textarea>
+                <button onclick="sendWhatsApp()" class="w-full border border-black dark:border-white py-2.5 text-xs font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all text-center" data-i18n="sendBtn">KIRIM VIA WA ↗</button>
+            </div>
+
+            <!-- Isi Modal Email (Sudah diperbarui dengan kolom Email Pengirim) -->
+            <div id="modal-content-email" class="hidden">
+                <h3 class="text-lg md:text-xl font-light mb-5 flex items-center gap-2"><i class="fa-regular fa-envelope"></i> <span data-i18n="emailTitle">Kirim Email Cepat</span></h3>
+                <div class="flex gap-3 mb-3">
+                    <input id="email-name" type="text" data-i18n-ph="phName" placeholder="Nama Anda..." class="w-1/2 bg-transparent border border-black/30 dark:border-white/30 p-2.5 focus:outline-none focus:border-black dark:focus:border-white text-[11px]">
+                    <input id="email-sender" type="email" data-i18n-ph="phEmail" placeholder="Email Anda (contoh@gmail.com)..." class="w-1/2 bg-transparent border border-black/30 dark:border-white/30 p-2.5 focus:outline-none focus:border-black dark:focus:border-white text-[11px]">
+                </div>
+                <input id="email-subj" type="text" data-i18n-ph="phSubj" placeholder="Subjek..." class="w-full bg-transparent border border-black/30 dark:border-white/30 p-2.5 mb-3 focus:outline-none focus:border-black dark:focus:border-white text-[11px]">
+                <textarea id="email-msg" rows="4" data-i18n-ph="phMsg" placeholder="Tulis pesan atau kolaborasi..." class="w-full bg-transparent border border-black/30 dark:border-white/30 p-2.5 mb-4 focus:outline-none focus:border-black dark:focus:border-white text-[11px] resize-none"></textarea>
+                <button id="btn-send-email" onclick="sendEmail()" class="w-full border border-black dark:border-white py-2.5 text-xs font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all text-center" data-i18n="sendBtn2">KIRIM EMAIL ↗</button>
+            </div>
         </div>
     </div>
 
     <script>
-        /* Skrip Preloader Counter */
         window.addEventListener('load', () => {
-            let progress = 0;
-            const counter = document.getElementById('loader-counter');
-            const preloader = document.getElementById('preloader');
-            
+            let progress = 0; const counter = document.getElementById('loader-counter'); const preloader = document.getElementById('preloader');
             const interval = setInterval(() => {
                 progress += Math.floor(Math.random() * 20) + 10;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        preloader.classList.add('fade-out');
-                    }, 200);
-                }
+                if (progress >= 100) { progress = 100; clearInterval(interval); setTimeout(() => { preloader.classList.add('fade-out'); }, 200); }
                 counter.innerText = progress + '%';
             }, 60);
         });
 
         function updateClock() {
-            const now = new Date();
-            const options = { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            const now = new Date(); const options = { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
             document.getElementById('wib-clock').innerHTML = `<i class="fa-regular fa-clock"></i> ${now.toLocaleTimeString('id-ID', options)} WIB`;
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(updateClock, 1000); updateClock();
 
         const cursor = document.getElementById('custom-cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
+        document.addEventListener('mousemove', (e) => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
 
         function copyText(text) {
             navigator.clipboard.writeText(text);
-            const toast = document.getElementById('toast');
+            const toast = document.getElementById('toast'); 
+            toast.innerText = currentLang === 'id' ? "Tersalin ke papan klip!" : "Copied to clipboard!";
             toast.classList.add('show');
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
+        }
+
+        function sendWhatsApp() {
+            const name = document.getElementById('wa-name').value.trim(); const msg = document.getElementById('wa-msg').value.trim();
+            if(!name || !msg) { alert(currentLang === 'id' ? "Harap isi nama dan pesan." : "Please fill your name and message."); return; }
+            const text = encodeURIComponent(currentLang === 'id' ? `Halo, nama saya ${name}.\n\n${msg}` : `Hello, my name is ${name}.\n\n${msg}`);
+            window.open(`https://wa.me/6287859962552?text=${text}`, '_blank');
+        }
+
+        // EmailJS Form Handler dengan Email Pengirim
+        function sendEmail() {
+            const name = document.getElementById('email-name').value.trim(); 
+            const email = document.getElementById('email-sender').value.trim(); 
+            const subj = document.getElementById('email-subj').value.trim(); 
+            const msg = document.getElementById('email-msg').value.trim();
+            
+            if(!name || !email || !msg) { 
+                alert(currentLang === 'id' ? "Harap isi nama, email, dan pesan." : "Please fill your name, email, and message."); 
+                return; 
+            }
+
+            const btn = document.getElementById('btn-send-email');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = currentLang === 'id' ? "MENGIRIM... ⏳" : "SENDING... ⏳";
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            const templateParams = {
+                from_name: name,
+                reply_to: email,
+                from_email: email,
+                subject: subj || "Tanpa Subjek",
+                message: msg
+            };
+
+            emailjs.send("service_5by5rq8", "template_omfqx2j", templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    
+                    const toast = document.getElementById('toast'); 
+                    toast.innerText = currentLang === 'id' ? "Email berhasil terkirim! ✓" : "Email sent successfully! ✓";
+                    toast.classList.add('show');
+                    setTimeout(() => { toast.classList.remove('show'); }, 3000);
+                    
+                    document.getElementById('email-name').value = '';
+                    document.getElementById('email-sender').value = '';
+                    document.getElementById('email-subj').value = '';
+                    document.getElementById('email-msg').value = '';
+                    closeModal();
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert(currentLang === 'id' ? "Gagal mengirim email. Silakan coba lagi." : "Failed to send email. Please try again.");
+                }).finally(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                });
+        }
+
+        function filterProjects(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-black', 'text-white', 'dark:bg-white', 'dark:text-black');
+                btn.classList.add('border-black/40', 'dark:border-white/40');
+                if(btn.getAttribute('data-cat') === cat) { btn.classList.add('bg-black', 'text-white', 'dark:bg-white', 'dark:text-black'); btn.classList.remove('border-black/40', 'dark:border-white/40'); }
+            });
+            document.querySelectorAll('.project-item').forEach(item => { item.style.display = (cat === 'all' || item.getAttribute('data-category') === cat) ? 'block' : 'none'; });
+        }
+
+        let currentLang = 'id';
+        const trans = {
+            id: {
+                avail: "TERSEDIA", role: "Lulusan Sosiologi & Manajer Proyek", bene: "Penerima Manfaat", init: "Inisiatif Sosial", growth: "Pertumbuhan Aktif", loc: "Berbasis di Bandung, Jawa Barat.",
+                eduBio: "Saya adalah lulusan Sosiologi Pembangunan dari UIN Sunan Gunung Djati Bandung.", expBio: "Dengan minat kuat pada riset sosial, komunikasi, dan desain kreatif, saya berpengalaman mengelola program sosial, administrasi digital, dan mengembangkan inisiatif yayasan.",
+                navHome: "Beranda", navProj: "Proyek", navNotes: "Catatan", navInfo: "Info", navCont: "Kontak", navFaq: "FAQ",
+                catAll: "Semua", catSoc: "Sosial", catBus: "Bisnis", catCre: "Kreatif", focus: "Fokus Saat Ini:",
+                note1Title: "Pendekatan Sosiologis dalam Program Sosial", note1Desc: "Bagaimana pemetaan komunitas akar rumput menentukan ketepatan sasaran distribusi bantuan hingga 100%.",
+                note2Title: "Efisiensi Administrasi Yayasan dengan AI", note2Desc: "Memanfaatkan model bahasa dan otomasi untuk mempercepat pembuatan proposal serta laporan pertanggungjawaban.",
+                contactHero: "Mari bangun sesuatu yang berdampak bersama.", btnEmail: "Kirim Email", btnWa: "Pesan WhatsApp", copied: "Tersalin ke papan klip!",
+                faq1Q: "Apa latar belakang pendidikan Anda?", faq1A: "Saya meraih gelar Sarjana Sosiologi Pembangunan dari UIN Sunan Gunung Djati Bandung (2019-2024), dan sebelumnya bersekolah di SMA Islam Darul Ulum (2014-2017).",
+                faq2Q: "Apa keahlian utama dan alat yang Anda gunakan?", faq2A: "Saya berspesialisasi dalam manajemen proyek, administrasi digital, desain grafis, dan copywriting. Saya sering memanfaatkan alat produktivitas AI (ChatGPT, Claude, Gemini), Microsoft Office, Google Workspace, GitHub, Vercel, dan Canva.",
+                faq3Q: "Apakah Anda memiliki pengalaman organisasi?", faq3A: "Ya, saya aktif berkontribusi di berbagai organisasi, termasuk menjabat sebagai Kepala Sponsorship di UPTQ (2023), Ketua Kewirausahaan di Koperasi Mahasiswa UIN Bandung, serta terlibat dalam inisiatif sosial bersama Yayasan RKPD.",
+                visitBtn: "KUNJUNGI PROYEK ↗", waTitle: "Kirim Pesan WhatsApp", emailTitle: "Kirim Email Cepat", sendBtn: "KIRIM VIA WA ↗", sendBtn2: "KIRIM EMAIL ↗",
+                phName: "Nama Anda...", phEmail: "Email Anda...", phSubj: "Subjek...", phMsg: "Tulis pesan atau kolaborasi..."
+            },
+            en: {
+                avail: "AVAILABLE", role: "Sociology Graduate & Project Manager", bene: "Beneficiaries", init: "Social Initiatives", growth: "Active Growth", loc: "Based in Bandung, West Java.",
+                eduBio: "I am a Sociology of Development graduate from UIN Sunan Gunung Djati Bandung.", expBio: "With a strong interest in social research, communication, and creative design, I have experience managing social programs, digital administration, and developing foundation initiatives.",
+                navHome: "Home", navProj: "Projects", navNotes: "Notes", navInfo: "Info", navCont: "Contact", navFaq: "FAQ",
+                catAll: "All", catSoc: "Social", catBus: "Business", catCre: "Creative", focus: "Current Focus:",
+                note1Title: "Sociological Approach in Social Programs", note1Desc: "How grassroots community mapping determines 100% accuracy in aid distribution targets.",
+                note2Title: "Foundation Admin Efficiency with AI", note2Desc: "Utilizing language models and automation to speed up proposal creation and accountability reports.",
+                contactHero: "Let's build something impactful together.", btnEmail: "Send an Email", btnWa: "WhatsApp Message", copied: "Copied to clipboard!",
+                faq1Q: "What is your educational background?", faq1A: "I hold a Bachelor's degree in Sociology (Sosiologi Pembangunan) from UIN Sunan Gunung Djati Bandung (2019-2024), and previously attended SMA Islam Darul Ulum (2014-2017).",
+                faq2Q: "What are your core skills and tools?", faq2A: "I specialize in project management, digital administration, graphic design, and copywriting. I regularly utilize AI productivity tools (ChatGPT, Claude, Gemini), Microsoft Office, Google Workspace, GitHub, Vercel, and Canva.",
+                faq3Q: "Do you have organizational experience?", faq3A: "Yes, I have actively contributed to various organizations, including serving as Head of Sponsorship at UPTQ (2023), Head of Entrepreneurship at Koperasi Mahasiswa UIN Bandung, and engaging in social initiatives with Yayasan RKPD.",
+                visitBtn: "VISIT PROJECT ↗", waTitle: "Send WhatsApp Message", emailTitle: "Send Quick Email", sendBtn: "SEND VIA WA ↗", sendBtn2: "SEND EMAIL ↗",
+                phName: "Your Name...", phEmail: "Your Email...", phSubj: "Subject...", phMsg: "Write your message here..."
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'id' ? 'en' : 'id';
+            document.getElementById('lang-label-m').innerText = currentLang === 'id' ? 'EN' : 'ID';
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(trans[currentLang][key]) el.innerText = trans[currentLang][key];
+            });
+
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const key = el.getAttribute('data-i18n-ph');
+                if(trans[currentLang][key]) el.placeholder = trans[currentLang][key];
+            });
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                const key = btn.getAttribute('data-i18n-nav');
+                if(trans[currentLang][key]) {
+                    btn.setAttribute('data-text', trans[currentLang][key]);
+                    if(btn.innerHTML !== '■') btn.innerHTML = trans[currentLang][key];
+                }
+            });
         }
 
         const projectData = {
@@ -379,92 +534,80 @@
             photo: { title: "Graphic & Photography", subtitle: "Creative Portfolio", desc: "Kumpulan karya desain grafis, media sosial, dan fotografi dokumentasi acara sosial serta usaha.", tags: ["Canva", "Photography", "Visual Art"], link: "https://www.instagram.com/is_photography810/" }
         };
 
-        function openModal(key) {
-            const data = projectData[key];
-            if (!data) return;
-            document.getElementById('modal-title').innerText = data.title;
-            document.getElementById('modal-subtitle').innerText = data.subtitle;
-            document.getElementById('modal-desc').innerText = data.desc;
-            document.getElementById('modal-tags').innerHTML = data.tags.map(t => `<span class="border border-black/20 dark:border-white/20 px-2 py-0.5 rounded-sm">${t}</span>`).join('');
-            const linkBtn = document.getElementById('modal-link');
-            if (data.link && data.link !== "#") { linkBtn.href = data.link; linkBtn.style.display = "inline-block"; } else { linkBtn.style.display = "none"; }
-            const modal = document.getElementById('modal');
-            modal.classList.remove('hidden'); modal.classList.add('flex');
+        function openModal(type) {
+            document.getElementById('modal-content-project').classList.add('hidden');
+            document.getElementById('modal-content-wa').classList.add('hidden');
+            document.getElementById('modal-content-email').classList.add('hidden');
+
+            if(type === 'waModal') {
+                document.getElementById('modal-content-wa').classList.remove('hidden');
+            } else if(type === 'emailModal') {
+                document.getElementById('modal-content-email').classList.remove('hidden');
+            } else if(projectData[type]) {
+                const data = projectData[type];
+                document.getElementById('modal-title').innerText = data.title;
+                document.getElementById('modal-subtitle').innerText = data.subtitle;
+                document.getElementById('modal-desc').innerText = data.desc;
+                document.getElementById('modal-tags').innerHTML = data.tags.map(t => `<span class="border border-black/20 dark:border-white/20 px-2 py-0.5 rounded-sm">${t}</span>`).join('');
+                const linkBtn = document.getElementById('modal-link');
+                if (data.link && data.link !== "#") { linkBtn.href = data.link; linkBtn.style.display = "inline-block"; } else { linkBtn.style.display = "none"; }
+                document.getElementById('modal-content-project').classList.remove('hidden');
+            }
+            document.getElementById('master-modal').classList.remove('hidden');
+            document.getElementById('master-modal').classList.add('flex');
         }
 
         function closeModal() {
-            const modal = document.getElementById('modal');
-            modal.classList.add('hidden'); modal.classList.remove('flex');
+            document.getElementById('master-modal').classList.add('hidden');
+            document.getElementById('master-modal').classList.remove('flex');
         }
 
         function showSection(sectionId, btnElement) {
             const sections = document.querySelectorAll('.content-section');
-            sections.forEach(section => section.classList.remove('active'));
-            const activeSection = document.getElementById(sectionId);
-            if (activeSection) activeSection.classList.add('active');
+            sections.forEach(section => {
+                section.classList.remove('active');
+                void section.offsetWidth; 
+            });
+            
+            if (document.getElementById(sectionId)) document.getElementById(sectionId).classList.add('active');
 
-            const navBtns = document.querySelectorAll('.nav-btn');
-            navBtns.forEach(btn => btn.innerHTML = btn.getAttribute('data-text'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.innerHTML = btn.getAttribute('data-text'));
             if (btnElement && btnElement.classList.contains('nav-btn')) btnElement.innerHTML = '■';
 
-            const mobileBtns = document.querySelectorAll('.nav-btn-mobile');
-            mobileBtns.forEach(btn => {
+            document.querySelectorAll('.nav-btn-mobile').forEach(btn => {
                 btn.classList.remove('text-black', 'dark:text-white', 'bg-gray-200', 'dark:bg-gray-800');
                 btn.classList.add('text-gray-500');
                 if (btn.getAttribute('data-target') === sectionId) {
-                    btn.classList.remove('text-gray-500');
-                    btn.classList.add('text-black', 'dark:text-white', 'bg-gray-200', 'dark:bg-gray-800');
+                    btn.classList.remove('text-gray-500'); btn.classList.add('text-black', 'dark:text-white', 'bg-gray-200', 'dark:bg-gray-800');
                 }
             });
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === '1') showSection('home', document.querySelectorAll('.nav-btn')[0]);
-            if (e.key === '2') showSection('projects', document.querySelectorAll('.nav-btn')[1]);
-            if (e.key === '3') showSection('info', document.querySelectorAll('.nav-btn')[2]);
-            if (e.key === '4') showSection('contact', document.querySelectorAll('.nav-btn')[3]);
-            if (e.key === '5') showSection('faq', document.querySelectorAll('.nav-btn')[4]);
             if (e.key === 'Escape') closeModal();
         });
 
         function setMode(mode) {
             const body = document.body;
-            const lightBtn = document.getElementById('mode-light');
-            const darkBtn = document.getElementById('mode-dark');
-            const mLightBtn = document.getElementById('mobile-mode-light');
-            const mDarkBtn = document.getElementById('mobile-mode-dark');
-
             if (mode === 'dark') {
                 body.classList.add('dark-mode');
-                if(lightBtn) { lightBtn.innerHTML = '□ LIGHT'; lightBtn.classList.add('text-gray-500'); }
-                if(darkBtn) { darkBtn.innerHTML = '■ DARK'; darkBtn.classList.remove('text-gray-500'); }
-                if(mLightBtn) { mLightBtn.innerHTML = '□ LIGHT'; mLightBtn.classList.add('text-gray-500'); }
-                if(mDarkBtn) { mDarkBtn.innerHTML = '■ DARK'; mDarkBtn.classList.remove('text-gray-500'); }
+                document.querySelectorAll('#mode-light, #mobile-mode-light').forEach(e => { if(e) { e.innerHTML = '□ LIGHT'; e.classList.add('text-gray-500'); } });
+                document.querySelectorAll('#mode-dark, #mobile-mode-dark').forEach(e => { if(e) { e.innerHTML = '■ DARK'; e.classList.remove('text-gray-500'); } });
             } else {
                 body.classList.remove('dark-mode');
-                if(lightBtn) { lightBtn.innerHTML = '■ LIGHT'; lightBtn.classList.remove('text-gray-500'); }
-                if(darkBtn) { darkBtn.innerHTML = '□ DARK'; darkBtn.classList.add('text-gray-500'); }
-                if(mLightBtn) { mLightBtn.innerHTML = '■ LIGHT'; mLightBtn.classList.remove('text-gray-500'); }
-                if(mDarkBtn) { mDarkBtn.innerHTML = '□ DARK'; mDarkBtn.classList.add('text-gray-500'); }
+                document.querySelectorAll('#mode-light, #mobile-mode-light').forEach(e => { if(e) { e.innerHTML = '■ LIGHT'; e.classList.remove('text-gray-500'); } });
+                document.querySelectorAll('#mode-dark, #mobile-mode-dark').forEach(e => { if(e) { e.innerHTML = '□ DARK'; e.classList.add('text-gray-500'); } });
             }
         }
 
         let isMono = true;
         function toggleMono() {
-            const body = document.body;
-            const monoBtn = document.getElementById('mode-mono');
-            const mMonoBtn = document.getElementById('mobile-mode-mono');
-            isMono = !isMono;
-            if (!isMono) {
-                body.classList.add('sans-mode');
-                if(monoBtn) { monoBtn.innerHTML = '□ MONOSPACED'; monoBtn.classList.add('text-gray-500'); }
-                if(mMonoBtn) { mMonoBtn.innerHTML = '□ MONO'; mMonoBtn.classList.add('text-gray-500'); }
-            } else {
-                body.classList.remove('sans-mode');
-                if(monoBtn) { monoBtn.innerHTML = '■ MONOSPACED'; monoBtn.classList.remove('text-gray-500'); }
-                if(mMonoBtn) { mMonoBtn.innerHTML = '■ MONO'; mMonoBtn.classList.remove('text-gray-500'); }
-            }
+            isMono = !isMono; document.body.classList.toggle('sans-mode', !isMono);
+            document.querySelectorAll('#mode-mono').forEach(e => { if(e) { e.innerHTML = isMono ? '■ MONO' : '□ MONO'; e.classList.toggle('text-gray-500', !isMono); } });
+            document.querySelectorAll('#mobile-mode-mono').forEach(e => { if(e) { e.innerHTML = isMono ? '■ MONO' : '□ MONO'; e.classList.toggle('text-gray-500', !isMono); } });
         }
+        
+        document.getElementById('lang-label-m').innerText = 'EN';
     </script>
 </body>
 </html>
