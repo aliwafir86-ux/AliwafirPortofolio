@@ -263,7 +263,7 @@
                 </div>
                 <div class="border-b border-gray-400/40 pb-3 hover:bg-black/5 dark:hover:bg-white/5 p-2 transition-colors rounded-sm cursor-pointer" onclick="playClickSound()">
                     <span class="text-[9px] text-gray-500">May 2026 • Productive AI</span>
-                    <h3 class="font-medium text-sm mt-0.5 mb-1" data-i18n="note2Title">Foundation Admin Efficiency with AI</h3>
+                    <h3 class="font-medium text-sm mt-0.5 mb-1" data-i18n="note2Title">Administrative Efficiency with AI</h3>
                     <p class="text-gray-600 leading-relaxed" data-i18n="note2Desc">Utilizing language models and automation to speed up proposal creation and accountability reports.</p>
                 </div>
             </div>
@@ -382,7 +382,6 @@
     </div>
 
     <script>
-        // Micro-Sound Effects using Web Audio API
         let soundEnabled = true;
         function toggleSound() {
             soundEnabled = !soundEnabled;
@@ -406,9 +405,7 @@
                 gain.connect(audioCtx.destination);
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.03);
-            } catch(e) {
-                // Ignore if audio context restricted before user interaction
-            }
+            } catch(e) {}
         }
 
         window.addEventListener('load', () => {
@@ -499,7 +496,6 @@
             document.querySelectorAll('.project-item').forEach(item => { item.style.display = (cat === 'all' || item.getAttribute('data-category') === cat) ? 'block' : 'none'; });
         }
 
-        // Default language set to English ('en')
         let currentLang = 'en';
         const trans = {
             id: {
@@ -508,10 +504,10 @@
                 navHome: "Beranda", navProj: "Proyek", navNotes: "Catatan", navInfo: "Info", navCont: "Kontak", navFaq: "FAQ",
                 catAll: "Semua", catSoc: "Sosial", catBus: "Bisnis", catCre: "Kreatif", focus: "Fokus Saat Ini:",
                 note1Title: "Pendekatan Sosiologis dalam Program Sosial", note1Desc: "Bagaimana pemetaan komunitas akar rumput menentukan ketepatan sasaran distribusi bantuan hingga 100%.",
-                note2Title: "Efisiensi Administrasi Yayasan dengan AI", note2Desc: "Memanfaatkan model bahasa dan otomasi untuk mempercepat pembuatan proposal serta laporan pertanggungjawaban.",
+                note2Title: "Efisiensi Administrasi dengan AI", note2Desc: "Memanfaatkan model bahasa dan otomasi untuk mempercepat pembuatan proposal serta laporan pertanggungjawaban.",
                 contactHero: "Mari bangun sesuatu yang berdampak bersama.", btnEmail: "Kirim Email", btnWa: "Pesan WhatsApp", copied: "Tersalin ke papan klip!",
                 faq1Q: "Apa latar belakang pendidikan Anda?", faq1A: "Saya meraih gelar Sarjana Sosiologi Pembangunan dari UIN Sunan Gunung Djati Bandung (2019-2024), dan sebelumnya bersekolah di SMA Islam Darul Ulum (2014-2017).",
-                faq2Q: "Apa keahlian utama dan alat yang Anda gunakan?", faq2A: "Saya berspesialisasi dalam manajemen proyek, administrasi digital, desain grafis, dan copywriting. Saya sering memanfaatkan alat produktivitas AI (ChatGPT, Claude, Gemini), Microsoft Office, Google Workspace, GitHub, Vercel, dan Canva.",
+                faq2Q: "Apa keahlian utama dan alat yang Anda gunakan?", faq2A: "I specialize in project management, digital administration, graphic design, and copywriting. I regularly utilize AI productivity tools (ChatGPT, Claude, Gemini), Microsoft Office, Google Workspace, GitHub, Vercel, and Canva.",
                 faq3Q: "Apakah Anda memiliki pengalaman organisasi?", faq3A: "Ya, saya aktif berkontribusi di berbagai organisasi, termasuk menjabat sebagai Kepala Sponsorship di UPTQ (2023), Ketua Kewirausahaan di Koperasi Mahasiswa UIN Bandung, serta terlibat dalam inisiatif sosial bersama Yayasan RKPD.",
                 visitBtn: "KUNJUNGI PROYEK ↗", waTitle: "Kirim Pesan WhatsApp", emailTitle: "Kirim Email Cepat", sendBtn: "KIRIM VIA WA ↗", sendBtn2: "KIRIM EMAIL ↗",
                 phName: "Nama Anda...", phEmail: "Email Anda...", phSubj: "Subjek...", phMsg: "Tulis pesan atau kolaborasi..."
@@ -522,7 +518,7 @@
                 navHome: "Home", navProj: "Projects", navNotes: "Notes", navInfo: "Info", navCont: "Contact", navFaq: "FAQ",
                 catAll: "All", catSoc: "Social", catBus: "Business", catCre: "Creative", focus: "Current Focus:",
                 note1Title: "Sociological Approach in Social Programs", note1Desc: "How grassroots community mapping determines 100% accuracy in aid distribution targets.",
-                note2Title: "Foundation Admin Efficiency with AI", note2Desc: "Utilizing language models and automation to speed up proposal creation and accountability reports.",
+                note2Title: "Administrative Efficiency with AI", note2Desc: "Utilizing language models and automation to speed up proposal creation and accountability reports.",
                 contactHero: "Let's build something impactful together.", btnEmail: "Send an Email", btnWa: "WhatsApp Message", copied: "Copied to clipboard!",
                 faq1Q: "What is your educational background?", faq1A: "I hold a Bachelor's degree in Sociology (Sosiologi Pembangunan) from UIN Sunan Gunung Djati Bandung (2019-2024), and previously attended SMA Islam Darul Ulum (2014-2017).",
                 faq2Q: "What are your core skills and tools?", faq2A: "I specialize in project management, digital administration, graphic design, and copywriting. I regularly utilize AI productivity tools (ChatGPT, Claude, Gemini), Microsoft Office, Google Workspace, GitHub, Vercel, and Canva.",
@@ -554,7 +550,6 @@
                 }
             });
 
-            // Update sound button text based on language if needed
             const soundTxt = soundEnabled ? (currentLang === 'en' ? '🔊 SOUND' : '🔊 SUARA') : (currentLang === 'en' ? '🔇 MUTE' : '🔇 MATI');
             document.querySelectorAll('#sound-toggle').forEach(el => el.innerText = soundTxt);
         }
@@ -639,10 +634,9 @@
             document.querySelectorAll('#mobile-mode-mono').forEach(e => { if(e) { e.innerHTML = isMono ? '■ MONO' : '□ MONO'; e.classList.toggle('text-gray-500', !isMono); } });
         }
         
-        // Initialize with English default
         document.getElementById('lang-label-m').innerText = 'ID';
-        toggleLanguage(); // Trigger to load English mapping correctly on start
-        toggleLanguage(); // Toggle back to set English as primary since initial HTML was English-ready or trans dictionary handles it.
+        toggleLanguage(); 
+        toggleLanguage(); 
     </script>
 </body>
 </html>
