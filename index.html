@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -124,7 +124,7 @@
     </div>
 
     <div id="custom-cursor"></div>
-    <div id="toast" class="fixed bottom-28 md:bottom-6 right-6 z-50 bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-[10px] font-medium shadow-lg" data-i18n="copied">Tersalin ke papan klip!</div>
+    <div id="toast" class="fixed bottom-28 md:bottom-6 right-6 z-50 bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-[10px] font-medium shadow-lg" data-i18n="copied">Copied to clipboard!</div>
     <div class="bg-noise"></div>
 
     <!-- FRAME ESTETIK -->
@@ -133,10 +133,11 @@
     <!-- Sisi Kiri: Teks Vertikal Bar (Desktop) -->
     <div class="hidden md:flex w-[4.5rem] pl-3 h-full border-r border-gray-400/50 flex-col justify-end items-center pb-10 text-[10px] font-medium tracking-widest z-10 transition-colors">
         <div class="vertical-text flex gap-5">
-            <span id="mode-light" onclick="setMode('light')" class="hover:opacity-50 transition-opacity cursor-pointer">■ LIGHT</span>
-            <span id="mode-dark" onclick="setMode('dark')" class="hover:opacity-50 transition-opacity text-gray-500 cursor-pointer">□ DARK</span>
-            <span id="mode-mono" onclick="toggleMono()" class="hover:opacity-50 transition-opacity cursor-pointer">■ MONO</span>
-            <span id="lang-switch-desk" onclick="toggleLanguage()" class="hover:opacity-50 transition-opacity text-sky-600 dark:text-sky-400 cursor-pointer">🌐 ID / EN</span>
+            <span id="sound-toggle" onclick="toggleSound(); playClickSound();" class="hover:opacity-50 transition-opacity cursor-pointer">🔊 SOUND</span>
+            <span id="mode-light" onclick="setMode('light'); playClickSound();" class="hover:opacity-50 transition-opacity cursor-pointer">■ LIGHT</span>
+            <span id="mode-dark" onclick="setMode('dark'); playClickSound();" class="hover:opacity-50 transition-opacity text-gray-500 cursor-pointer">□ DARK</span>
+            <span id="mode-mono" onclick="toggleMono(); playClickSound();" class="hover:opacity-50 transition-opacity cursor-pointer">■ MONO</span>
+            <span id="lang-switch-desk" onclick="toggleLanguage(); playClickSound();" class="hover:opacity-50 transition-opacity text-sky-600 dark:text-sky-400 cursor-pointer">🌐 ID / EN</span>
         </div>
     </div>
 
@@ -146,32 +147,33 @@
             <div class="flex items-center justify-between gap-2 text-[10px] font-medium text-gray-500 mb-4">
                 <span id="wib-clock"><i class="fa-regular fa-clock"></i> --:--:-- WIB</span>
                 <span class="inline-flex items-center gap-1.5 text-green-600 dark:text-green-400">
-                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> <span data-i18n="avail">TERSEDIA</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> <span data-i18n="avail">AVAILABLE</span>
                 </span>
             </div>
 
             <!-- Mobile Mode & Lang Switcher -->
             <div class="flex md:hidden items-center justify-between text-[10px] font-medium border-b border-gray-400/30 pb-3 mb-6">
                 <div class="flex gap-3">
-                    <span id="mobile-mode-light" onclick="setMode('light')" class="hover:opacity-50 transition-opacity cursor-pointer">■ LIGHT</span>
-                    <span id="mobile-mode-dark" onclick="setMode('dark')" class="hover:opacity-50 transition-opacity text-gray-500 cursor-pointer">□ DARK</span>
+                    <span id="mobile-sound-toggle" onclick="toggleSound(); playClickSound();" class="hover:opacity-50 transition-opacity cursor-pointer">🔊</span>
+                    <span id="mobile-mode-light" onclick="setMode('light'); playClickSound();" class="hover:opacity-50 transition-opacity cursor-pointer">■ LIGHT</span>
+                    <span id="mobile-mode-dark" onclick="setMode('dark'); playClickSound();" class="hover:opacity-50 transition-opacity text-gray-500 cursor-pointer">□ DARK</span>
                 </div>
                 <div class="flex gap-3">
-                    <span id="mobile-mode-mono" onclick="toggleMono()" class="hover:opacity-50 transition-opacity cursor-pointer">■ MONO</span>
-                    <span onclick="toggleLanguage()" class="text-sky-600 dark:text-sky-400 cursor-pointer font-bold">🌐 <span id="lang-label-m">EN</span></span>
+                    <span id="mobile-mode-mono" onclick="toggleMono(); playClickSound();" class="hover:opacity-50 transition-opacity cursor-pointer">■ MONO</span>
+                    <span onclick="toggleLanguage(); playClickSound();" class="text-sky-600 dark:text-sky-400 cursor-pointer font-bold">🌐 <span id="lang-label-m">ID</span></span>
                 </div>
             </div>
 
             <h1 class="text-3xl md:text-[2.25rem] leading-tight font-light mb-2 tracking-tight">Muhammad Ali <br> Wafir</h1>
-            <p class="text-[11px] font-medium text-gray-700 mb-6 md:mb-12 transition-colors" data-i18n="role">Lulusan Sosiologi & Manajer Proyek</p>
+            <p class="text-[11px] font-medium text-gray-700 mb-6 md:mb-12 transition-colors" data-i18n="role">Sociology Graduate & Project Manager</p>
 
             <nav class="hidden md:flex flex-col gap-3 font-medium text-sm">
-                <button onclick="showSection('home', this)" data-text="Beranda" data-i18n-nav="navHome" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">■</button>
-                <button onclick="showSection('projects', this)" data-text="Proyek" data-i18n-nav="navProj" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Proyek</button>
-                <button onclick="showSection('notes', this)" data-text="Catatan" data-i18n-nav="navNotes" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Catatan</button>
-                <button onclick="showSection('info', this)" data-text="Info" data-i18n-nav="navInfo" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Info</button>
-                <button onclick="showSection('contact', this)" data-text="Kontak" data-i18n-nav="navCont" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Kontak</button>
-                <button onclick="showSection('faq', this)" data-text="FAQ" data-i18n-nav="navFaq" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">FAQ</button>
+                <button onclick="showSection('home', this); playClickSound();" data-text="Home" data-i18n-nav="navHome" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">■</button>
+                <button onclick="showSection('projects', this); playClickSound();" data-text="Projects" data-i18n-nav="navProj" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Projects</button>
+                <button onclick="showSection('notes', this); playClickSound();" data-text="Notes" data-i18n-nav="navNotes" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Notes</button>
+                <button onclick="showSection('info', this); playClickSound();" data-text="Info" data-i18n-nav="navInfo" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Info</button>
+                <button onclick="showSection('contact', this); playClickSound();" data-text="Contact" data-i18n-nav="navCont" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">Contact</button>
+                <button onclick="showSection('faq', this); playClickSound();" data-text="FAQ" data-i18n-nav="navFaq" class="nav-btn text-left hover:line-through w-fit flex items-center gap-2">FAQ</button>
             </nav>
         </div>
         
@@ -188,22 +190,22 @@
             <div class="flex md:absolute top-0 md:top-2 left-0 md:left-4 gap-6 md:gap-8 text-[11px] font-medium border-l border-black dark:border-white pl-4 mb-8 md:mb-0">
                 <div>
                     <p class="text-base md:text-lg font-light">1,000+</p>
-                    <p class="text-gray-500" data-i18n="bene">Penerima Manfaat</p>
+                    <p class="text-gray-500" data-i18n="bene">Beneficiaries</p>
                 </div>
                 <div>
-                    <p class="text-base md:text-lg font-light">3 Utama</p>
-                    <p class="text-gray-500" data-i18n="init">Inisiatif Sosial</p>
+                    <p class="text-base md:text-lg font-light">3 Main</p>
+                    <p class="text-gray-500" data-i18n="init">Social Initiatives</p>
                 </div>
                 <div>
                     <p class="text-base md:text-lg font-light">2026</p>
-                    <p class="text-gray-500" data-i18n="growth">Pertumbuhan Aktif</p>
+                    <p class="text-gray-500" data-i18n="growth">Active Growth</p>
                 </div>
             </div>
 
             <div class="md:absolute bottom-16 md:bottom-20 right-6 lg:right-12 text-left md:text-right max-w-sm text-[11px] font-normal leading-relaxed mt-4 md:mt-0 z-10">
-                <p data-i18n="loc">Berbasis di Bandung, Jawa Barat.</p><br>
-                <p data-i18n="eduBio">Saya adalah lulusan Sosiologi Pembangunan dari UIN Sunan Gunung Djati Bandung.</p><br>
-                <p data-i18n="expBio">Dengan minat kuat pada riset sosial, komunikasi, dan desain kreatif, saya berpengalaman mengelola program sosial, administrasi digital, dan mengembangkan inisiatif yayasan.</p>
+                <p data-i18n="loc">Based in Bandung, West Java.</p><br>
+                <p data-i18n="eduBio">I am a Sociology of Development graduate from UIN Sunan Gunung Djati Bandung.</p><br>
+                <p data-i18n="expBio">With a strong interest in social research, communication, and creative design, I have experience managing social programs, digital administration, and developing foundation initiatives.</p>
             </div>
 
             <!-- RUNNING TEXT SKILLS -->
@@ -217,32 +219,32 @@
         <!-- PROJECTS SECTION -->
         <div id="projects" class="content-section items-start md:items-end justify-center gap-4 md:gap-6 pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
             <div class="flex gap-2 text-[10px] font-medium mb-2 w-full md:justify-end flex-wrap">
-                <button onclick="filterProjects('all')" class="cat-btn border border-black dark:border-white px-2 py-1 bg-black text-white dark:bg-white dark:text-black transition-all" data-cat="all" data-i18n="catAll">Semua</button>
-                <button onclick="filterProjects('social')" class="cat-btn border border-black/40 dark:border-white/40 px-2 py-1 transition-all hover:border-black dark:hover:border-white" data-cat="social" data-i18n="catSoc">Sosial</button>
-                <button onclick="filterProjects('business')" class="cat-btn border border-black/40 dark:border-white/40 px-2 py-1 transition-all hover:border-black dark:hover:border-white" data-cat="business" data-i18n="catBus">Bisnis</button>
-                <button onclick="filterProjects('creative')" class="cat-btn border border-black/40 dark:border-white/40 px-2 py-1 transition-all hover:border-black dark:hover:border-white" data-cat="creative" data-i18n="catCre">Kreatif</button>
+                <button onclick="filterProjects('all'); playClickSound();" class="cat-btn border border-black dark:border-white px-2 py-1 bg-black text-white dark:bg-white dark:text-black transition-all" data-cat="all" data-i18n="catAll">All</button>
+                <button onclick="filterProjects('social'); playClickSound();" class="cat-btn border border-black/40 dark:border-white/40 px-2 py-1 transition-all hover:border-black dark:hover:border-white" data-cat="social" data-i18n="catSoc">Social</button>
+                <button onclick="filterProjects('business'); playClickSound();" class="cat-btn border border-black/40 dark:border-white/40 px-2 py-1 transition-all hover:border-black dark:hover:border-white" data-cat="business" data-i18n="catBus">Business</button>
+                <button onclick="filterProjects('creative'); playClickSound();" class="cat-btn border border-black/40 dark:border-white/40 px-2 py-1 transition-all hover:border-black dark:hover:border-white" data-cat="creative" data-i18n="catCre">Creative</button>
             </div>
 
             <div id="project-list" class="flex flex-col gap-4 w-full md:items-end">
-                <div onclick="openModal('ysb')" class="project-item text-left md:text-right group cursor-pointer w-full hover:-translate-y-0.5 hover:scale-[1.01] transition-transform duration-300" data-category="social">
+                <div onclick="openModal('ysb'); playClickSound();" class="project-item text-left md:text-right group cursor-pointer w-full hover:-translate-y-0.5 hover:scale-[1.01] transition-transform duration-300" data-category="social">
                     <h2 class="text-xl md:text-2xl font-light mb-0.5 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
                         Yayasan Sarana Berbagi <i class="fa-solid fa-circle-info text-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
                     </h2>
                     <p class="text-[10px] md:text-[11px] font-medium text-gray-600">2025-2026 / Project Manager / Social Welfare</p>
                 </div>
-                <div onclick="openModal('ice')" class="project-item text-left md:text-right group cursor-pointer w-full hover:-translate-y-0.5 hover:scale-[1.01] transition-transform duration-300" data-category="business">
+                <div onclick="openModal('ice'); playClickSound();" class="project-item text-left md:text-right group cursor-pointer w-full hover:-translate-y-0.5 hover:scale-[1.01] transition-transform duration-300" data-category="business">
                     <h2 class="text-xl md:text-2xl font-light mb-0.5 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
                         Ice KulCool <i class="fa-solid fa-circle-info text-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
                     </h2>
                     <p class="text-[10px] md:text-[11px] font-medium text-gray-600">Entrepreneurship / Founder & Web Branding</p>
                 </div>
-                <div onclick="openModal('rkpd')" class="project-item text-left md:text-right group cursor-pointer w-full hover:-translate-y-0.5 hover:scale-[1.01] transition-transform duration-300" data-category="social">
+                <div onclick="openModal('rkpd'); playClickSound();" class="project-item text-left md:text-right group cursor-pointer w-full hover:-translate-y-0.5 hover:scale-[1.01] transition-transform duration-300" data-category="social">
                     <h2 class="text-xl md:text-2xl font-light mb-0.5 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
                         Yayasan RKPD <i class="fa-solid fa-circle-info text-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
                     </h2>
                     <p class="text-[10px] md:text-[11px] font-medium text-gray-600">2019-2024 / Education / Social Worker</p>
                 </div>
-                <div onclick="openModal('photo')" class="project-item text-left md:text-right group cursor-pointer w-full hover:-translate-y-0.5 hover:scale-[1.01] transition-transform duration-300" data-category="creative">
+                <div onclick="openModal('photo'); playClickSound();" class="project-item text-left md:text-right group cursor-pointer w-full hover:-translate-y-0.5 hover:scale-[1.01] transition-transform duration-300" data-category="creative">
                     <h2 class="text-xl md:text-2xl font-light mb-0.5 group-hover:italic transition-all flex items-center justify-start md:justify-end gap-2">
                         Graphic & Photography <i class="fa-solid fa-circle-info text-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"></i>
                     </h2>
@@ -254,15 +256,15 @@
         <!-- NOTES SECTION -->
         <div id="notes" class="content-section items-start md:items-end justify-center gap-6 pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
             <div class="max-w-md ml-auto flex flex-col gap-4 text-[11px] font-normal my-4 w-full text-left md:text-right">
-                <div class="border-b border-gray-400/40 pb-3 hover:bg-black/5 dark:hover:bg-white/5 p-2 transition-colors rounded-sm cursor-pointer">
+                <div class="border-b border-gray-400/40 pb-3 hover:bg-black/5 dark:hover:bg-white/5 p-2 transition-colors rounded-sm cursor-pointer" onclick="playClickSound()">
                     <span class="text-[9px] text-gray-500">June 2026 • Insights</span>
-                    <h3 class="font-medium text-sm mt-0.5 mb-1" data-i18n="note1Title">Pendekatan Sosiologis dalam Program Sosial</h3>
-                    <p class="text-gray-600 leading-relaxed" data-i18n="note1Desc">Bagaimana pemetaan komunitas akar rumput menentukan ketepatan sasaran distribusi bantuan hingga 100%.</p>
+                    <h3 class="font-medium text-sm mt-0.5 mb-1" data-i18n="note1Title">Sociological Approach in Social Programs</h3>
+                    <p class="text-gray-600 leading-relaxed" data-i18n="note1Desc">How grassroots community mapping determines 100% accuracy in aid distribution targets.</p>
                 </div>
-                <div class="border-b border-gray-400/40 pb-3 hover:bg-black/5 dark:hover:bg-white/5 p-2 transition-colors rounded-sm cursor-pointer">
+                <div class="border-b border-gray-400/40 pb-3 hover:bg-black/5 dark:hover:bg-white/5 p-2 transition-colors rounded-sm cursor-pointer" onclick="playClickSound()">
                     <span class="text-[9px] text-gray-500">May 2026 • Productive AI</span>
-                    <h3 class="font-medium text-sm mt-0.5 mb-1" data-i18n="note2Title">Efisiensi Administrasi Yayasan dengan AI</h3>
-                    <p class="text-gray-600 leading-relaxed" data-i18n="note2Desc">Memanfaatkan model bahasa dan otomasi untuk mempercepat pembuatan proposal serta laporan pertanggungjawaban.</p>
+                    <h3 class="font-medium text-sm mt-0.5 mb-1" data-i18n="note2Title">Foundation Admin Efficiency with AI</h3>
+                    <p class="text-gray-600 leading-relaxed" data-i18n="note2Desc">Utilizing language models and automation to speed up proposal creation and accountability reports.</p>
                 </div>
             </div>
         </div>
@@ -270,15 +272,15 @@
         <!-- INFO SECTION -->
         <div id="info" class="content-section items-start md:items-end justify-center gap-6 md:gap-8 pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
             <div class="grid grid-cols-2 md:flex md:flex-col gap-3 font-medium text-[11px] md:text-xs w-full md:w-auto">
-                <a href="https://www.instagram.com/mazaimza/" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">IG Personal <i class="fa-brands fa-instagram text-xs"></i></span></a>
-                <a href="https://www.instagram.com/is_photography810/" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">IG Photo <i class="fa-solid fa-camera text-xs"></i></span></a>
-                <a href="https://www.instagram.com/ice_kulcool/" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">IG Bisnis <i class="fa-solid fa-ice-cream text-[10px]"></i></span></a>
-                <a href="https://ice-kulcool-pro.vercel.app" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">Web Bisnis <i class="fa-solid fa-globe text-[10px]"></i></span></a>
-                <a href="https://github.com" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">GitHub <i class="fa-brands fa-github text-xs"></i></span></a>
-                <a href="https://www.linkedin.com/in/muhammad-ali-wafir-8a86741ab" target="_blank" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">LinkedIn <i class="fa-brands fa-linkedin text-xs"></i></span></a>
+                <a href="https://www.instagram.com/mazaimza/" target="_blank" onclick="playClickSound()" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">IG Personal <i class="fa-brands fa-instagram text-xs"></i></span></a>
+                <a href="https://www.instagram.com/is_photography810/" target="_blank" onclick="playClickSound()" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">IG Photo <i class="fa-solid fa-camera text-xs"></i></span></a>
+                <a href="https://www.instagram.com/ice_kulcool/" target="_blank" onclick="playClickSound()" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">IG Bisnis <i class="fa-solid fa-ice-cream text-[10px]"></i></span></a>
+                <a href="https://ice-kulcool-pro.vercel.app" target="_blank" onclick="playClickSound()" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">Web Bisnis <i class="fa-solid fa-globe text-[10px]"></i></span></a>
+                <a href="https://github.com" target="_blank" onclick="playClickSound()" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">GitHub <i class="fa-brands fa-github text-xs"></i></span></a>
+                <a href="https://www.linkedin.com/in/muhammad-ali-wafir-8a86741ab" target="_blank" onclick="playClickSound()" class="hover:line-through flex items-center justify-between border-b border-gray-400/50 pb-1 pl-2 md:w-56 hover:pl-4 transition-all"><span>↗</span> <span class="flex items-center gap-1.5">LinkedIn <i class="fa-brands fa-linkedin text-xs"></i></span></a>
             </div>
             <div class="text-left md:text-right text-[11px] font-normal leading-relaxed mt-4 md:mt-2">
-                <p class="text-gray-500 mb-1" data-i18n="focus">Fokus Saat Ini:</p>
+                <p class="text-gray-500 mb-1" data-i18n="focus">Current Focus:</p>
                 <p>• Project Management</p>
                 <p>• AI Tools Productivity</p>
                 <p>• Social Research</p>
@@ -289,20 +291,20 @@
         <!-- CONTACT SECTION -->
         <div id="contact" class="content-section items-center justify-center pr-0 md:pr-8 min-h-[50vh] md:min-h-full">
             <div class="max-w-sm w-full text-center">
-                <p class="text-base md:text-lg mb-8 font-light" data-i18n="contactHero">Mari bangun sesuatu yang berdampak bersama.</p>
+                <p class="text-base md:text-lg mb-8 font-light" data-i18n="contactHero">Let's build something impactful together.</p>
                 
                 <div class="flex flex-col gap-4">
-                    <button onclick="openModal('emailModal')" class="w-full border border-black dark:border-white py-3 px-4 font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black hover:-translate-y-1 transition-all flex justify-between items-center text-xs">
-                        <span class="flex items-center gap-3"><i class="fa-regular fa-envelope text-base"></i> <span data-i18n="btnEmail">Kirim Email</span></span> <span>↗</span>
+                    <button onclick="openModal('emailModal'); playClickSound();" class="w-full border border-black dark:border-white py-3 px-4 font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black hover:-translate-y-1 transition-all flex justify-between items-center text-xs">
+                        <span class="flex items-center gap-3"><i class="fa-regular fa-envelope text-base"></i> <span data-i18n="btnEmail">Send an Email</span></span> <span>↗</span>
                     </button>
-                    <button onclick="openModal('waModal')" class="w-full border border-black dark:border-white py-3 px-4 font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black hover:-translate-y-1 transition-all flex justify-between items-center text-xs">
-                        <span class="flex items-center gap-3"><i class="fa-brands fa-whatsapp text-base"></i> <span data-i18n="btnWa">Pesan WhatsApp</span></span> <span>↗</span>
+                    <button onclick="openModal('waModal'); playClickSound();" class="w-full border border-black dark:border-white py-3 px-4 font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black hover:-translate-y-1 transition-all flex justify-between items-center text-xs">
+                        <span class="flex items-center gap-3"><i class="fa-brands fa-whatsapp text-base"></i> <span data-i18n="btnWa">WhatsApp Message</span></span> <span>↗</span>
                     </button>
                 </div>
                 
                 <div class="mt-8 text-[10px] text-gray-500 flex justify-center gap-4">
-                    <span class="cursor-pointer hover:text-black dark:hover:text-white transition-colors" onclick="copyText('aliwafir86@gmail.com')">COPY EMAIL</span>
-                    <span class="cursor-pointer hover:text-black dark:hover:text-white transition-colors" onclick="copyText('087859962552')">COPY WA</span>
+                    <span class="cursor-pointer hover:text-black dark:hover:text-white transition-colors" onclick="copyText('aliwafir86@gmail.com'); playClickSound();">COPY EMAIL</span>
+                    <span class="cursor-pointer hover:text-black dark:hover:text-white transition-colors" onclick="copyText('087859962552'); playClickSound();">COPY WA</span>
                 </div>
             </div>
         </div>
@@ -312,21 +314,21 @@
             <div class="max-w-md ml-auto flex flex-col gap-4 md:gap-6 text-[11px] font-normal my-4">
                 <div>
                     <h3 class="mb-1 text-black transition-colors font-medium flex items-center gap-2">
-                        <i class="fa-solid fa-graduation-cap text-gray-500"></i> <span data-i18n="faq1Q">Apa latar belakang pendidikan Anda?</span>
+                        <i class="fa-solid fa-graduation-cap text-gray-500"></i> <span data-i18n="faq1Q">What is your educational background?</span>
                     </h3>
-                    <p class="text-gray-700 transition-colors leading-relaxed" data-i18n="faq1A">Saya meraih gelar Sarjana Sosiologi Pembangunan dari UIN Sunan Gunung Djati Bandung (2019-2024), dan sebelumnya bersekolah di SMA Islam Darul Ulum (2014-2017).</p>
+                    <p class="text-gray-700 transition-colors leading-relaxed" data-i18n="faq1A">I hold a Bachelor's degree in Sociology (Sosiologi Pembangunan) from UIN Sunan Gunung Djati Bandung (2019-2024), and previously attended SMA Islam Darul Ulum (2014-2017).</p>
                 </div>
                 <div>
                     <h3 class="mb-1 text-black transition-colors font-medium flex items-center gap-2">
-                        <i class="fa-solid fa-screwdriver-wrench text-gray-500"></i> <span data-i18n="faq2Q">Apa keahlian utama dan alat yang Anda gunakan?</span>
+                        <i class="fa-solid fa-screwdriver-wrench text-gray-500"></i> <span data-i18n="faq2Q">What are your core skills and tools?</span>
                     </h3>
-                    <p class="text-gray-700 transition-colors leading-relaxed" data-i18n="faq2A">Saya berspesialisasi dalam manajemen proyek, administrasi digital, desain grafis, dan copywriting. Saya sering memanfaatkan alat produktivitas AI (ChatGPT, Claude, Gemini), Microsoft Office, Google Workspace, GitHub, Vercel, dan Canva.</p>
+                    <p class="text-gray-700 transition-colors leading-relaxed" data-i18n="faq2A">I specialize in project management, digital administration, graphic design, and copywriting. I regularly utilize AI productivity tools (ChatGPT, Claude, Gemini), Microsoft Office, Google Workspace, GitHub, Vercel, and Canva.</p>
                 </div>
                 <div>
                     <h3 class="mb-1 text-black transition-colors font-medium flex items-center gap-2">
-                        <i class="fa-solid fa-users text-gray-500"></i> <span data-i18n="faq3Q">Apakah Anda memiliki pengalaman organisasi?</span>
+                        <i class="fa-solid fa-users text-gray-500"></i> <span data-i18n="faq3Q">Do you have organizational experience?</span>
                     </h3>
-                    <p class="text-gray-700 transition-colors leading-relaxed" data-i18n="faq3A">Ya, saya aktif berkontribusi di berbagai organisasi, termasuk menjabat sebagai Kepala Sponsorship di UPTQ (2023), Ketua Kewirausahaan di Koperasi Mahasiswa UIN Bandung, serta terlibat dalam inisiatif sosial bersama Yayasan RKPD.</p>
+                    <p class="text-gray-700 transition-colors leading-relaxed" data-i18n="faq3A">Yes, I have actively contributed to various organizations, including serving as Head of Sponsorship at UPTQ (2023), Head of Entrepreneurship at Koperasi Mahasiswa UIN Bandung, and engaging in social initiatives with Yayasan RKPD.</p>
                 </div>
             </div>
         </div>
@@ -335,18 +337,18 @@
 
     <!-- Navigasi Bawah Khusus Mobile (6 Menu) -->
     <div class="flex md:hidden fixed bottom-0 left-0 w-full bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md justify-around p-1.5 pb-5 z-50 font-medium text-[9px] border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-        <button onclick="showSection('home', this)" data-target="home" class="nav-btn-mobile text-black dark:text-white bg-gray-200 dark:bg-gray-800 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-house text-sm mb-0.5"></i><span data-i18n="navHome">Beranda</span></button>
-        <button onclick="showSection('projects', this)" data-target="projects" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-folder-open text-sm mb-0.5"></i><span data-i18n="navProj">Proyek</span></button>
-        <button onclick="showSection('notes', this)" data-target="notes" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-note-sticky text-sm mb-0.5"></i><span data-i18n="navNotes">Catatan</span></button>
-        <button onclick="showSection('info', this)" data-target="info" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-user text-sm mb-0.5"></i><span data-i18n="navInfo">Info</span></button>
-        <button onclick="showSection('contact', this)" data-target="contact" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-envelope text-sm mb-0.5"></i><span data-i18n="navCont">Kontak</span></button>
-        <button onclick="showSection('faq', this)" data-target="faq" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-circle-question text-sm mb-0.5"></i><span data-i18n="navFaq">FAQ</span></button>
+        <button onclick="showSection('home', this); playClickSound();" data-target="home" class="nav-btn-mobile text-black dark:text-white bg-gray-200 dark:bg-gray-800 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-house text-sm mb-0.5"></i><span data-i18n="navHome">Home</span></button>
+        <button onclick="showSection('projects', this); playClickSound();" data-target="projects" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-folder-open text-sm mb-0.5"></i><span data-i18n="navProj">Projects</span></button>
+        <button onclick="showSection('notes', this); playClickSound();" data-target="notes" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-note-sticky text-sm mb-0.5"></i><span data-i18n="navNotes">Notes</span></button>
+        <button onclick="showSection('info', this); playClickSound();" data-target="info" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-user text-sm mb-0.5"></i><span data-i18n="navInfo">Info</span></button>
+        <button onclick="showSection('contact', this); playClickSound();" data-target="contact" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-envelope text-sm mb-0.5"></i><span data-i18n="navCont">Contact</span></button>
+        <button onclick="showSection('faq', this); playClickSound();" data-target="faq" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-circle-question text-sm mb-0.5"></i><span data-i18n="navFaq">FAQ</span></button>
     </div>
 
     <!-- SEMUA POPUP / MODAL -->
     <div id="master-modal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-6 transition-opacity duration-300">
         <div class="modal-box bg-white border border-black max-w-lg w-full p-6 md:p-8 relative shadow-2xl transition-all scale-95 opacity-0 animate-[slideUpFade_0.3s_ease_forwards]">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-[10px] font-medium hover:opacity-50 transition-opacity">✕ CLOSE [ESC]</button>
+            <button onclick="closeModal(); playClickSound();" class="absolute top-4 right-4 text-[10px] font-medium hover:opacity-50 transition-opacity">✕ CLOSE [ESC]</button>
             
             <!-- Isi Modal Project -->
             <div id="modal-content-project" class="hidden">
@@ -354,32 +356,61 @@
                 <p id="modal-subtitle" class="text-[11px] font-medium text-gray-500 mb-4 md:mb-6">Subtitle</p>
                 <p id="modal-desc" class="text-[11px] md:text-xs font-normal leading-relaxed mb-4 md:mb-6">Desc</p>
                 <div id="modal-tags" class="flex flex-wrap gap-2 text-[10px] font-medium mb-6"></div>
-                <a id="modal-link" href="#" target="_blank" class="inline-block border border-black dark:border-white px-4 py-2 text-[10px] font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all" data-i18n="visitBtn">KUNJUNGI PROYEK ↗</a>
+                <a id="modal-link" href="#" target="_blank" onclick="playClickSound()" class="inline-block border border-black dark:border-white px-4 py-2 text-[10px] font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all" data-i18n="visitBtn">VISIT PROJECT ↗</a>
             </div>
 
             <!-- Isi Modal WhatsApp -->
             <div id="modal-content-wa" class="hidden">
-                <h3 class="text-lg md:text-xl font-light mb-5 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-green-500"></i> <span data-i18n="waTitle">Kirim Pesan WhatsApp</span></h3>
-                <input id="wa-name" type="text" data-i18n-ph="phName" placeholder="Nama Anda..." class="w-full bg-transparent border border-black/30 dark:border-white/30 p-2.5 mb-3 focus:outline-none focus:border-black dark:focus:border-white text-[11px]">
-                <textarea id="wa-msg" rows="4" data-i18n-ph="phMsg" placeholder="Tulis pesan atau tawaran kolaborasi..." class="w-full bg-transparent border border-black/30 dark:border-white/30 p-2.5 mb-4 focus:outline-none focus:border-black dark:focus:border-white text-[11px] resize-none"></textarea>
-                <button onclick="sendWhatsApp()" class="w-full border border-black dark:border-white py-2.5 text-xs font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all text-center" data-i18n="sendBtn">KIRIM VIA WA ↗</button>
+                <h3 class="text-lg md:text-xl font-light mb-5 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-green-500"></i> <span data-i18n="waTitle">Send WhatsApp Message</span></h3>
+                <input id="wa-name" type="text" data-i18n-ph="phName" placeholder="Your Name..." class="w-full bg-transparent border border-black/30 dark:border-white/30 p-2.5 mb-3 focus:outline-none focus:border-black dark:focus:border-white text-[11px]">
+                <textarea id="wa-msg" rows="4" data-i18n-ph="phMsg" placeholder="Write your message here..." class="w-full bg-transparent border border-black/30 dark:border-white/30 p-2.5 mb-4 focus:outline-none focus:border-black dark:focus:border-white text-[11px] resize-none"></textarea>
+                <button onclick="sendWhatsApp(); playClickSound();" class="w-full border border-black dark:border-white py-2.5 text-xs font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all text-center" data-i18n="sendBtn">SEND VIA WA ↗</button>
             </div>
 
-            <!-- Isi Modal Email (Sudah diperbarui dengan kolom Email Pengirim) -->
+            <!-- Isi Modal Email -->
             <div id="modal-content-email" class="hidden">
-                <h3 class="text-lg md:text-xl font-light mb-5 flex items-center gap-2"><i class="fa-regular fa-envelope"></i> <span data-i18n="emailTitle">Kirim Email Cepat</span></h3>
+                <h3 class="text-lg md:text-xl font-light mb-5 flex items-center gap-2"><i class="fa-regular fa-envelope"></i> <span data-i18n="emailTitle">Send Quick Email</span></h3>
                 <div class="flex gap-3 mb-3">
-                    <input id="email-name" type="text" data-i18n-ph="phName" placeholder="Nama Anda..." class="w-1/2 bg-transparent border border-black/30 dark:border-white/30 p-2.5 focus:outline-none focus:border-black dark:focus:border-white text-[11px]">
-                    <input id="email-sender" type="email" data-i18n-ph="phEmail" placeholder="Email Anda (contoh@gmail.com)..." class="w-1/2 bg-transparent border border-black/30 dark:border-white/30 p-2.5 focus:outline-none focus:border-black dark:focus:border-white text-[11px]">
+                    <input id="email-name" type="text" data-i18n-ph="phName" placeholder="Your Name..." class="w-1/2 bg-transparent border border-black/30 dark:border-white/30 p-2.5 focus:outline-none focus:border-black dark:focus:border-white text-[11px]">
+                    <input id="email-sender" type="email" data-i18n-ph="phEmail" placeholder="Your Email..." class="w-1/2 bg-transparent border border-black/30 dark:border-white/30 p-2.5 focus:outline-none focus:border-black dark:focus:border-white text-[11px]">
                 </div>
-                <input id="email-subj" type="text" data-i18n-ph="phSubj" placeholder="Subjek..." class="w-full bg-transparent border border-black/30 dark:border-white/30 p-2.5 mb-3 focus:outline-none focus:border-black dark:focus:border-white text-[11px]">
-                <textarea id="email-msg" rows="4" data-i18n-ph="phMsg" placeholder="Tulis pesan atau kolaborasi..." class="w-full bg-transparent border border-black/30 dark:border-white/30 p-2.5 mb-4 focus:outline-none focus:border-black dark:focus:border-white text-[11px] resize-none"></textarea>
-                <button id="btn-send-email" onclick="sendEmail()" class="w-full border border-black dark:border-white py-2.5 text-xs font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all text-center" data-i18n="sendBtn2">KIRIM EMAIL ↗</button>
+                <input id="email-subj" type="text" data-i18n-ph="phSubj" placeholder="Subject..." class="w-full bg-transparent border border-black/30 dark:border-white/30 p-2.5 mb-3 focus:outline-none focus:border-black dark:focus:border-white text-[11px]">
+                <textarea id="email-msg" rows="4" data-i18n-ph="phMsg" placeholder="Write your message here..." class="w-full bg-transparent border border-black/30 dark:border-white/30 p-2.5 mb-4 focus:outline-none focus:border-black dark:focus:border-white text-[11px] resize-none"></textarea>
+                <button id="btn-send-email" onclick="sendEmail(); playClickSound();" class="w-full border border-black dark:border-white py-2.5 text-xs font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all text-center" data-i18n="sendBtn2">SEND EMAIL ↗</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Micro-Sound Effects using Web Audio API
+        let soundEnabled = true;
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const soundTxt = soundEnabled ? (currentLang === 'en' ? '🔊 SOUND' : '🔊 SUARA') : (currentLang === 'en' ? '🔇 MUTE' : '🔇 MATI');
+            document.querySelectorAll('#sound-toggle').forEach(el => el.innerText = soundTxt);
+            document.querySelectorAll('#mobile-sound-toggle').forEach(el => el.innerText = soundEnabled ? '🔊' : '🔇');
+        }
+
+        function playClickSound() {
+            if (!soundEnabled) return;
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.03);
+                gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.03);
+            } catch(e) {
+                // Ignore if audio context restricted before user interaction
+            }
+        }
+
         window.addEventListener('load', () => {
             let progress = 0; const counter = document.getElementById('loader-counter'); const preloader = document.getElementById('preloader');
             const interval = setInterval(() => {
@@ -413,7 +444,6 @@
             window.open(`https://wa.me/6287859962552?text=${text}`, '_blank');
         }
 
-        // EmailJS Form Handler dengan Email Pengirim
         function sendEmail() {
             const name = document.getElementById('email-name').value.trim(); 
             const email = document.getElementById('email-sender').value.trim(); 
@@ -441,8 +471,6 @@
 
             emailjs.send("service_5by5rq8", "template_omfqx2j", templateParams)
                 .then(function(response) {
-                    console.log('SUCCESS!', response.status, response.text);
-                    
                     const toast = document.getElementById('toast'); 
                     toast.innerText = currentLang === 'id' ? "Email berhasil terkirim! ✓" : "Email sent successfully! ✓";
                     toast.classList.add('show');
@@ -454,7 +482,6 @@
                     document.getElementById('email-msg').value = '';
                     closeModal();
                 }, function(error) {
-                    console.log('FAILED...', error);
                     alert(currentLang === 'id' ? "Gagal mengirim email. Silakan coba lagi." : "Failed to send email. Please try again.");
                 }).finally(() => {
                     btn.innerHTML = originalText;
@@ -472,7 +499,8 @@
             document.querySelectorAll('.project-item').forEach(item => { item.style.display = (cat === 'all' || item.getAttribute('data-category') === cat) ? 'block' : 'none'; });
         }
 
-        let currentLang = 'id';
+        // Default language set to English ('en')
+        let currentLang = 'en';
         const trans = {
             id: {
                 avail: "TERSEDIA", role: "Lulusan Sosiologi & Manajer Proyek", bene: "Penerima Manfaat", init: "Inisiatif Sosial", growth: "Pertumbuhan Aktif", loc: "Berbasis di Bandung, Jawa Barat.",
@@ -525,6 +553,10 @@
                     if(btn.innerHTML !== '■') btn.innerHTML = trans[currentLang][key];
                 }
             });
+
+            // Update sound button text based on language if needed
+            const soundTxt = soundEnabled ? (currentLang === 'en' ? '🔊 SOUND' : '🔊 SUARA') : (currentLang === 'en' ? '🔇 MUTE' : '🔇 MATI');
+            document.querySelectorAll('#sound-toggle').forEach(el => el.innerText = soundTxt);
         }
 
         const projectData = {
@@ -607,7 +639,10 @@
             document.querySelectorAll('#mobile-mode-mono').forEach(e => { if(e) { e.innerHTML = isMono ? '■ MONO' : '□ MONO'; e.classList.toggle('text-gray-500', !isMono); } });
         }
         
-        document.getElementById('lang-label-m').innerText = 'EN';
+        // Initialize with English default
+        document.getElementById('lang-label-m').innerText = 'ID';
+        toggleLanguage(); // Trigger to load English mapping correctly on start
+        toggleLanguage(); // Toggle back to set English as primary since initial HTML was English-ready or trans dictionary handles it.
     </script>
 </body>
 </html>
