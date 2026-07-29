@@ -127,11 +127,16 @@
         }
         
         .content-section { display: none; width: 100%; }
+        
+        /* PERBAIKAN 1: Menghapus center default agar di HP konten rapi di atas, lalu kembalikan ke center khusus di desktop */
         .content-section.active { 
             display: flex; 
             flex-direction: column; 
-            justify-content: center; 
+            justify-content: flex-start; 
             animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @media (min-width: 768px) {
+            .content-section.active { justify-content: center; }
         }
 
         #toast { opacity: 0; transform: translateY(20px); transition: all 0.3s ease; }
@@ -194,8 +199,8 @@
                 </div>
             </div>
 
-            <!-- Mobile Mode & Lang Switcher -->
-            <div class="flex md:hidden items-center justify-between text-[10px] font-medium border-b border-gray-400/30 pb-3 mb-6">
+            <!-- PERBAIKAN 2: Penambahan flex-wrap dan gap-y-2 agar menu mobile atas tidak sesak -->
+            <div class="flex md:hidden items-center justify-between text-[10px] font-medium border-b border-gray-400/30 pb-3 mb-6 flex-wrap gap-y-2">
                 <div class="flex gap-3">
                     <span id="mobile-sound-toggle" onclick="toggleSound(); playClickSound();" class="hover:opacity-50 transition-opacity cursor-pointer">🔊</span>
                     <span id="mobile-mode-light" onclick="setMode('light'); playClickSound();" class="hover:opacity-50 transition-opacity cursor-pointer">■ LIGHT</span>
@@ -380,14 +385,14 @@
 
     </div>
 
-    <!-- Navigasi Bawah Khusus Mobile (6 Menu) -->
-    <div class="flex md:hidden fixed bottom-0 left-0 w-full bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md justify-around p-1.5 pb-5 z-50 font-medium text-[9px] border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-        <button onclick="showSection('home', this); playClickSound();" data-target="home" class="nav-btn-mobile text-black dark:text-white bg-gray-200 dark:bg-gray-800 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-house text-sm mb-0.5"></i><span data-i18n="navHome">Home</span></button>
-        <button onclick="showSection('projects', this); playClickSound();" data-target="projects" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-folder-open text-sm mb-0.5"></i><span data-i18n="navProj">Projects</span></button>
-        <button onclick="showSection('notes', this); playClickSound();" data-target="notes" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-note-sticky text-sm mb-0.5"></i><span data-i18n="navNotes">Notes</span></button>
-        <button onclick="showSection('info', this); playClickSound();" data-target="info" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-user text-sm mb-0.5"></i><span data-i18n="navInfo">Info</span></button>
-        <button onclick="showSection('contact', this); playClickSound();" data-target="contact" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-envelope text-sm mb-0.5"></i><span data-i18n="navCont">Contact</span></button>
-        <button onclick="showSection('faq', this); playClickSound();" data-target="faq" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 w-12 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-circle-question text-sm mb-0.5"></i><span data-i18n="navFaq">FAQ</span></button>
+    <!-- PERBAIKAN 3: Mengganti w-12 menjadi flex-1 agar lebar tombol dinamis dan tidak sesak / kepotong -->
+    <div class="flex md:hidden fixed bottom-0 left-0 w-full bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md justify-around p-1.5 pb-5 z-50 font-medium text-[9px] border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] gap-1">
+        <button onclick="showSection('home', this); playClickSound();" data-target="home" class="nav-btn-mobile text-black dark:text-white bg-gray-200 dark:bg-gray-800 flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-house text-sm mb-0.5"></i><span data-i18n="navHome">Home</span></button>
+        <button onclick="showSection('projects', this); playClickSound();" data-target="projects" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-folder-open text-sm mb-0.5"></i><span data-i18n="navProj">Projects</span></button>
+        <button onclick="showSection('notes', this); playClickSound();" data-target="notes" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-note-sticky text-sm mb-0.5"></i><span data-i18n="navNotes">Notes</span></button>
+        <button onclick="showSection('info', this); playClickSound();" data-target="info" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-user text-sm mb-0.5"></i><span data-i18n="navInfo">Info</span></button>
+        <button onclick="showSection('contact', this); playClickSound();" data-target="contact" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-envelope text-sm mb-0.5"></i><span data-i18n="navCont">Contact</span></button>
+        <button onclick="showSection('faq', this); playClickSound();" data-target="faq" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-circle-question text-sm mb-0.5"></i><span data-i18n="navFaq">FAQ</span></button>
     </div>
 
     <!-- COMMAND PALETTE MODAL (NEW UPGRADE) -->
