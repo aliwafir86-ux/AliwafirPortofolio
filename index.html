@@ -128,7 +128,6 @@
         
         .content-section { display: none; width: 100%; }
         
-        /* PERBAIKAN 1: Menghapus center default agar di HP konten rapi di atas, lalu kembalikan ke center khusus di desktop */
         .content-section.active { 
             display: flex; 
             flex-direction: column; 
@@ -199,7 +198,6 @@
                 </div>
             </div>
 
-            <!-- PERBAIKAN 2: Penambahan flex-wrap dan gap-y-2 agar menu mobile atas tidak sesak -->
             <div class="flex md:hidden items-center justify-between text-[10px] font-medium border-b border-gray-400/30 pb-3 mb-6 flex-wrap gap-y-2">
                 <div class="flex gap-3">
                     <span id="mobile-sound-toggle" onclick="toggleSound(); playClickSound();" class="hover:opacity-50 transition-opacity cursor-pointer">🔊</span>
@@ -207,7 +205,7 @@
                     <span id="mobile-mode-dark" onclick="setMode('dark'); playClickSound();" class="hover:opacity-50 transition-opacity text-gray-500 cursor-pointer">□ DARK</span>
                 </div>
                 <div class="flex gap-3 items-center">
-                    <button onclick="openCommandPalette(); playClickSound();" class="border border-black/30 dark:border-white/30 px-1.5 py-0.5 rounded text-[9px]">⌘K</button>
+                    <!-- PERBAIKAN: Tombol ⌘K yang double dihapus dari bagian ini -->
                     <span id="mobile-mode-mono" onclick="toggleMono(); playClickSound();" class="hover:opacity-50 transition-opacity cursor-pointer">■ MONO</span>
                     <span onclick="toggleLanguage(); playClickSound();" class="text-sky-600 dark:text-sky-400 cursor-pointer font-bold">🌐 <span id="lang-label-m">ID</span></span>
                 </div>
@@ -385,7 +383,6 @@
 
     </div>
 
-    <!-- PERBAIKAN 3: Mengganti w-12 menjadi flex-1 agar lebar tombol dinamis dan tidak sesak / kepotong -->
     <div class="flex md:hidden fixed bottom-0 left-0 w-full bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md justify-around p-1.5 pb-5 z-50 font-medium text-[9px] border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] gap-1">
         <button onclick="showSection('home', this); playClickSound();" data-target="home" class="nav-btn-mobile text-black dark:text-white bg-gray-200 dark:bg-gray-800 flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-house text-sm mb-0.5"></i><span data-i18n="navHome">Home</span></button>
         <button onclick="showSection('projects', this); playClickSound();" data-target="projects" class="nav-btn-mobile text-gray-500 flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-folder-open text-sm mb-0.5"></i><span data-i18n="navProj">Projects</span></button>
